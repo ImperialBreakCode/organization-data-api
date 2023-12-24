@@ -1,7 +1,6 @@
 ﻿namespace OrganizationData.Data.Entities.Base
 {
-    public interface IEntity
+    public interface IEntity : IEntityId, ICreatedAtEntity, IDeletedAtEntity
     {
-        string Id { get; set; }
     }
 }

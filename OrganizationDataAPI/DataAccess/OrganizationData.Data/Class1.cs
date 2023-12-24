@@ -1,4 +1,4 @@
-﻿namespace OrganizationData.Domain
+﻿namespace OrganizationData.Data
 {
     public class Class1
     {

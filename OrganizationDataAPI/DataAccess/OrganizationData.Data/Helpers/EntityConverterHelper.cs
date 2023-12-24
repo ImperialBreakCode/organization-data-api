@@ -1,11 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrganizationData.Data.Entities.Base;
 
 namespace OrganizationData.Data.Helpers
 {
     public static class EntityConverterHelper
     {
-        public static ICollection<T> ToEntityCollection<T>(SqlCommand command) where T : class, IEntity
+        public static ICollection<T> ToEntityCollection<T>(SqlCommand command) where T : class
         {
             var collection = new List<T>();
 
@@ -22,7 +21,7 @@ namespace OrganizationData.Data.Helpers
             return collection;
         }
 
-        public static T ToEntity<T>(T entity, SqlDataReader reader) where T : class, IEntity
+        public static T ToEntity<T>(T entity, SqlDataReader reader) where T : class
         {
             var properties = entity.GetType().GetProperties();
 
@@ -34,7 +33,7 @@ namespace OrganizationData.Data.Helpers
             return entity;
         }
 
-        public static void ToQuery<T>(T entity, SqlCommand command) where T : class, IEntity
+        public static void ToQuery<T>(T entity, SqlCommand command) where T : class
         {
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)

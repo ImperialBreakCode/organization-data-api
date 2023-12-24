@@ -18,5 +18,13 @@
 
             return $"UPDATE [{typeof(T).Name}] SET {string.Join(", ", updateList)} WHERE id=@id";
         }
+
+        public static string GenerateFullDeleteQuery<T>()
+        {
+            var properties = typeof(T).GetProperties();
+            var whereList = properties.Select(p => $"{p.Name} = @{p.Name}");
+
+            return $"DELETE FROM [{typeof(T).Name}] WHERE {string.Join(", ", whereList)}";
+        }
     }
 }

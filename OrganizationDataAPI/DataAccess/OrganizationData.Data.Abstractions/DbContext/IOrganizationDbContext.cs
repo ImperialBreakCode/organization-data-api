@@ -9,6 +9,8 @@ namespace OrganizationData.Data.Abstractions.DbContext
         IRepository<Country> Country { get; }
         IRepositoryWithJunction<Industry, IndustryOrganization> Industry { get; }
 
+        void Setup(string connectionString);
+
         void SaveChanges();
         void DiscardChanges();
     }

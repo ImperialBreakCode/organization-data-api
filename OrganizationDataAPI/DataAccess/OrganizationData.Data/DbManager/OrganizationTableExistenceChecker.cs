@@ -16,7 +16,7 @@ WHERE TABLE_NAME = '{0}';";
         {
             SqlCommand sqlCommand = SqlConnection.CreateCommand();
             sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.CommandText = string.Format(_tableColumnsCountQuery, nameof(T));
+            sqlCommand.CommandText = string.Format(_tableColumnsCountQuery, typeof(T).Name);
 
             return (int)sqlCommand.ExecuteScalar() != 0;
         }

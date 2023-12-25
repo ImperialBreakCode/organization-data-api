@@ -38,7 +38,11 @@ namespace OrganizationData.Data.Helpers
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)
             {
-                command.Parameters.AddWithValue($"@{property.Name}", property.GetValue(entity));
+                var value = property.GetValue(entity);
+
+                value ??= DBNull.Value;
+
+                command.Parameters.AddWithValue($"@{property.Name}", value);
             }
         }
     }

@@ -13,7 +13,7 @@ namespace OrganizationData.Data.DbManager
         {
             SqlCommand sqlCommand = SqlConnection.CreateCommand();
             sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.CommandText = TableCreationScripts.CreationScripts[nameof(T)];
+            sqlCommand.CommandText = TableCreationScripts.CreationScripts[typeof(T).Name];
             sqlCommand.ExecuteNonQuery();
         }
     }

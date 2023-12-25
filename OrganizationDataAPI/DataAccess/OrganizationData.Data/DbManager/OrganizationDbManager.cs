@@ -30,6 +30,8 @@ namespace OrganizationData.Data.DbManager
             CreateTableIfItDoesntExist<Organization>();
             CreateTableIfItDoesntExist<Industry>();
             CreateTableIfItDoesntExist<IndustryOrganization>();
+
+            _connection.Close();
         }
 
         private void CreateTableIfItDoesntExist<T>() where T : class 

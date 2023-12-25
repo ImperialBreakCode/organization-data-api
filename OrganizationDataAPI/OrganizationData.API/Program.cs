@@ -1,7 +1,11 @@
+using OrganizationData.API.Extentions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.ConfigureOptions();
 
+// Add services to the container.
+builder.Services.ConfigureOrganizationApplication();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

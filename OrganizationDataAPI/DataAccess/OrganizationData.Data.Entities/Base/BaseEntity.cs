@@ -7,6 +7,7 @@ namespace OrganizationData.Data.Entities.Base
         {
             Id = Guid.NewGuid().ToString();
             CreatedAt = DateTime.UtcNow;
+            DeletedAt = null;
         }
 
         public string Id { get; set; }

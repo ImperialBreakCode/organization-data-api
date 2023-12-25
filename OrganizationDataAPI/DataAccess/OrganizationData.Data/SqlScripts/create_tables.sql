@@ -2,7 +2,7 @@ CREATE TABLE [Country](
     Id varchar(36) NOT NULL PRIMARY KEY,
     CreatedAt datetime NOT NULL,
     DeletedAt datetime NULL,
-    CountryName varchar(64) UNIQUE
+    CountryName varchar(64) NOT NULL UNIQUE
 );
 
 CREATE TABLE [Organization](
@@ -22,7 +22,7 @@ CREATE TABLE [Industry](
     Id varchar(36) NOT NULL PRIMARY KEY,
     CreatedAt datetime NOT NULL,
     DeletedAt datetime NULL,
-    IndustryName varchar(128) UNIQUE
+    IndustryName varchar(128) NOT NULL UNIQUE
 );
 
 CREATE TABLE [IndustryOrganization](

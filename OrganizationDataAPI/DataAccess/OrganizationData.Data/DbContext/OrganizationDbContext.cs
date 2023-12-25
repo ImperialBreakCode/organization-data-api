@@ -11,19 +11,18 @@ namespace OrganizationData.Data.DbContext
         private readonly SqlConnection _sqlConnection;
         private SqlTransaction _sqlTransaction;
 
-        private readonly IRepositoryFactory _repositoryFactory;
+        private IRepositoryFactory _repositoryFactory;
 
         private IOrganizationRepository _organizationRepository;
         private IRepository<Country> _countryRepository;
         private IRepositoryWithJunction<Industry, IndustryOrganization> _industryRepository;
 
-        public OrganizationDbContext(string connectionString)
-        {
-            _sqlConnection = new SqlConnection(connectionString);
-            _sqlConnection.Open();
-            _sqlTransaction = _sqlConnection.BeginTransaction();
+        private bool _isSet;
 
-            _repositoryFactory = new SqlRepositoryFactory(_sqlConnection, _sqlTransaction);
+        public OrganizationDbContext()
+        {
+            _sqlConnection = new SqlConnection();
+            _isSet = false;
         }
 
         public IOrganizationRepository Organization 
@@ -34,6 +33,20 @@ namespace OrganizationData.Data.DbContext
 
         public IRepositoryWithJunction<Industry, IndustryOrganization> Industry 
             => _industryRepository ??= _repositoryFactory.CreateGenericRepositoryWithJunction<Industry, IndustryOrganization>();
+
+        public void Setup(string connectionString)
+        {
+            if (!_isSet)
+            {
+                _sqlConnection.ConnectionString = connectionString;
+                _sqlConnection.Open();
+                _sqlTransaction = _sqlConnection.BeginTransaction();
+
+                _repositoryFactory = new SqlRepositoryFactory(_sqlConnection, _sqlTransaction);
+
+                _isSet = true;
+            }
+        }
 
         public void SaveChanges()
         {

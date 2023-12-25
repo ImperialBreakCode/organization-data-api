@@ -15,7 +15,8 @@
     Id varchar(36) NOT NULL PRIMARY KEY,
     CreatedAt datetime NOT NULL,
     DeletedAt datetime NULL,
-    CountryName varchar(64) NOT NULL UNIQUE
+    CountryName varchar(64) NOT NULL,
+    UNIQUE(CountryName, DeletedAt)
 );";
 
         public const string OrganizationTableScript = @"CREATE TABLE [Organization](
@@ -35,7 +36,8 @@
     Id varchar(36) NOT NULL PRIMARY KEY,
     CreatedAt datetime NOT NULL,
     DeletedAt datetime NULL,
-    IndustryName varchar(128) NOT NULL UNIQUE
+    IndustryName varchar(128) NOT NULL,
+    UNIQUE(IndustryName, DeletedAt)
 );";
 
         public const string IndustryOrganizationTableScript = @"CREATE TABLE [IndustryOrganization](

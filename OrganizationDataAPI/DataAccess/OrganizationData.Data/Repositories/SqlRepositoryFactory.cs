@@ -25,7 +25,9 @@ namespace OrganizationData.Data.Repositories
             return new OrganizationRepository(_sqlConnection, _sqlTransaction);
         }
 
-        IRepositoryWithJunction<T, TJunction> IRepositoryFactory.CreateGenericRepositoryWithJunction<T, TJunction>()
+        public IRepositoryWithJunction<T, TJunction> CreateGenericRepositoryWithJunction<T, TJunction>()
+            where T : class, IEntity
+            where TJunction : class
         {
             return new RepositoryWithJunction<T, TJunction>(_sqlConnection, _sqlTransaction);
         }

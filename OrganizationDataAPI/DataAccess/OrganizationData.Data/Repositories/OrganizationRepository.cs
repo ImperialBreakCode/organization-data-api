@@ -5,7 +5,7 @@ using OrganizationData.Data.Helpers;
 
 namespace OrganizationData.Data.Repositories
 {
-    public class OrganizationRepository : RepositoryWithJunction<Organization, IndustryOrganization>, IOrganizationRepository
+    internal class OrganizationRepository : RepositoryWithJunction<Organization, IndustryOrganization>, IOrganizationRepository
     {
         private readonly string _junctionSelectQuery;
 

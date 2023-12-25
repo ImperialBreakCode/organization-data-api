@@ -5,7 +5,7 @@ using OrganizationData.Data.Helpers;
 
 namespace OrganizationData.Data.Repositories
 {
-    public class RepositoryWithJunction<T, TJUnctionEntity> : Repository<T>, IRepositoryWithJunction<T, TJUnctionEntity>
+    internal class RepositoryWithJunction<T, TJUnctionEntity> : Repository<T>, IRepositoryWithJunction<T, TJUnctionEntity>
         where T : class, IEntity
         where TJUnctionEntity : class
     {

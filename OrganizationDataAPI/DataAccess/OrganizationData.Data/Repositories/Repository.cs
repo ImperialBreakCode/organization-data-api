@@ -5,7 +5,7 @@ using OrganizationData.Data.Helpers;
 
 namespace OrganizationData.Data.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class, IEntity
+    internal class Repository<T> : IRepository<T> where T : class, IEntity
     {
         private readonly SqlTransaction _transaction;
         private readonly SqlConnection _connection;

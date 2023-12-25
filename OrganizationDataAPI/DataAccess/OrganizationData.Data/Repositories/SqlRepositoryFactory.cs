@@ -4,7 +4,7 @@ using OrganizationData.Data.Entities.Base;
 
 namespace OrganizationData.Data.Repositories
 {
-    public class SqlRepositoryFactory : IRepositoryFactory
+    internal class SqlRepositoryFactory : IRepositoryFactory
     {
         private readonly SqlConnection _sqlConnection;
         private readonly SqlTransaction _sqlTransaction;

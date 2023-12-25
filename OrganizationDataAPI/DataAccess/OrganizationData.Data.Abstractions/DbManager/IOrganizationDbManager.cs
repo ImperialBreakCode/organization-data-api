@@ -2,6 +2,6 @@
 {
     public interface IOrganizationDbManager
     {
-        void EnsureDatabaseTables();
+        void EnsureDatabaseTables(string connectionString);
     }
 }

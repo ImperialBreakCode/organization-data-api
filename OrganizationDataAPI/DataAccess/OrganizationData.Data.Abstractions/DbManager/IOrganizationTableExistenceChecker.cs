@@ -2,9 +2,9 @@
 
 namespace OrganizationData.Data.Abstractions.DbManager
 {
-    public interface IOrganizationTableCreator
+    public interface IOrganizationTableExistenceChecker
     {
         SqlConnection SqlConnection { get; set; }
-        void CreateTable<T>() where T : class;
+        bool CheckIfTableExists<T>() where T : class;
     }
 }

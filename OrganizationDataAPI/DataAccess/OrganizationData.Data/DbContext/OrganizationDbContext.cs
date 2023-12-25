@@ -6,7 +6,7 @@ using OrganizationData.Data.Repositories;
 
 namespace OrganizationData.Data.DbContext
 {
-    public class OrganizationDbContext : IOrganizationDbContext
+    internal class OrganizationDbContext : IOrganizationDbContext
     {
         private readonly SqlConnection _sqlConnection;
         private SqlTransaction _sqlTransaction;

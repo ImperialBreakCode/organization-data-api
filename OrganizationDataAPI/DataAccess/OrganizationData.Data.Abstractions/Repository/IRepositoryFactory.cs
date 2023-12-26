@@ -4,8 +4,10 @@ namespace OrganizationData.Data.Abstractions.Repository
 {
     public interface IRepositoryFactory
     {
-        IRepository<T> CreateGenericRepository<T>() where T : class, IEntity;
+        ICountryRepository CreateCountryRepository();
+
         IOrganizationRepository CreateOrganizationRepository();
+
         IRepositoryWithJunction<T, TJunction> CreateGenericRepositoryWithJunction<T, TJunction>()
             where T : class, IEntity
             where TJunction : class;

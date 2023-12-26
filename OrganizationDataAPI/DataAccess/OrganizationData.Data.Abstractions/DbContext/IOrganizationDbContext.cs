@@ -6,7 +6,7 @@ namespace OrganizationData.Data.Abstractions.DbContext
     public interface IOrganizationDbContext : IDisposable
     {
         IOrganizationRepository Organization { get; }
-        IRepository<Country> Country { get; }
+        ICountryRepository Country { get; }
         IRepositoryWithJunction<Industry, IndustryOrganization> Industry { get; }
 
         void Setup(string connectionString);

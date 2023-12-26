@@ -4,7 +4,7 @@ using OrganizationData.Application;
 using OrganizationData.Application.Abstractions.Settings;
 using OrganizationData.Application.Options;
 
-namespace OrganizationData.API.Extentions
+namespace OrganizationData.API.Extensions
 {
     public static class ServiceConfiguration
     {

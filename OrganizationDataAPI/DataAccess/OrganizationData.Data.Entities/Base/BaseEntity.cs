@@ -11,7 +11,7 @@ namespace OrganizationData.Data.Entities.Base
         }
 
         public string Id { get; set; }
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
     }
 }

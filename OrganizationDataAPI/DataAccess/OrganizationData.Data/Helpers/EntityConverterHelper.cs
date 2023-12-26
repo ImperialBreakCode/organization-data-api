@@ -27,7 +27,14 @@ namespace OrganizationData.Data.Helpers
 
             foreach (var property in properties)
             {
-                property.SetValue(entity, reader[property.Name]);
+                var value = reader[property.Name];
+
+                if (value == DBNull.Value)
+                {
+                    value = null;
+                }
+
+                property.SetValue(entity, value);
             }
 
             return entity;

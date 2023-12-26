@@ -1,4 +1,4 @@
-using OrganizationData.API.Extentions;
+using OrganizationData.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

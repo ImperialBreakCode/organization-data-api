@@ -38,5 +38,10 @@ namespace OrganizationData.Application.Data
         {
             _seeder.SeedData(DbContext);
         }
+
+        public void Dispose()
+        {
+            _organizationDbContext?.Dispose();
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace OrganizationData.Application.Abstractions.Data
 {
-    public interface IOrganizationData
+    public interface IOrganizationData : IDisposable
     {
         IOrganizationDbContext DbContext { get; }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using OrganizationData.Data.Abstractions;
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.Entities;
@@ -14,7 +15,7 @@ namespace OrganizationData.Data.DbContext
         private IRepositoryFactory _repositoryFactory;
 
         private IOrganizationRepository _organizationRepository;
-        private IRepository<Country> _countryRepository;
+        private ICountryRepository _countryRepository;
         private IRepositoryWithJunction<Industry, IndustryOrganization> _industryRepository;
 
         private bool _isSet;
@@ -28,8 +29,8 @@ namespace OrganizationData.Data.DbContext
         public IOrganizationRepository Organization 
             => _organizationRepository ??= _repositoryFactory.CreateOrganizationRepository();
 
-        public IRepository<Country> Country 
-            => _countryRepository ??= _repositoryFactory.CreateGenericRepository<Country>();
+        public ICountryRepository Country 
+            => _countryRepository ??= _repositoryFactory.CreateCountryRepository();
 
         public IRepositoryWithJunction<Industry, IndustryOrganization> Industry 
             => _industryRepository ??= _repositoryFactory.CreateGenericRepositoryWithJunction<Industry, IndustryOrganization>();

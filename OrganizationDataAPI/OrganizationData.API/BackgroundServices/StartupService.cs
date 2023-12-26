@@ -1,5 +1,4 @@
-﻿
-using OrganizationData.Application.Abstractions.Data;
+﻿using OrganizationData.Application.Abstractions.Data;
 
 namespace OrganizationData.API.BackgroundServices
 {
@@ -16,6 +15,7 @@ namespace OrganizationData.API.BackgroundServices
         {
             _organizationData.EnsureDatabase();
             //_organizationData.SeedData();
+            _organizationData.Dispose();
 
             return Task.CompletedTask;
         }

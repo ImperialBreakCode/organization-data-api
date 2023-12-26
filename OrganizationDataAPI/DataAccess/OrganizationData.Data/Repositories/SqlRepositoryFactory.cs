@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using OrganizationData.Data.Abstractions;
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.Entities.Base;
 
@@ -15,11 +16,6 @@ namespace OrganizationData.Data.Repositories
             _sqlTransaction = sqlTransaction;
         }
 
-        public IRepository<T> CreateGenericRepository<T>() where T : class, IEntity
-        {
-            return new Repository<T>(_sqlConnection, _sqlTransaction);
-        }
-
         public IOrganizationRepository CreateOrganizationRepository()
         {
             return new OrganizationRepository(_sqlConnection, _sqlTransaction);
@@ -30,6 +26,11 @@ namespace OrganizationData.Data.Repositories
             where TJunction : class
         {
             return new RepositoryWithJunction<T, TJunction>(_sqlConnection, _sqlTransaction);
+        }
+
+        public ICountryRepository CreateCountryRepository()
+        {
+            return new CountryRepository(_sqlConnection, _sqlTransaction);
         }
     }
 }

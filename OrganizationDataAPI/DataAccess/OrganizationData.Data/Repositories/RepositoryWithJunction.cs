@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.Entities.Base;
 using OrganizationData.Data.Helpers;
@@ -12,8 +12,8 @@ namespace OrganizationData.Data.Repositories
         private readonly string _junctionInsertQuery;
         private readonly string _junctionDeleteQuery;
 
-        public RepositoryWithJunction(SqlConnection sqlConnection, SqlTransaction sqlTransaction) 
-            : base(sqlConnection, sqlTransaction)
+        public RepositoryWithJunction(ISqlConnectionWrapper sqlConnectionWrapper) 
+            : base(sqlConnectionWrapper)
         {
             _junctionInsertQuery = SqlQueryGeneratorHelper.GenerateInsertQuery<TJUnctionEntity>();
             _junctionDeleteQuery = SqlQueryGeneratorHelper.GenerateFullDeleteQuery<TJUnctionEntity>();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using OrganizationData.Data.Abstractions.DbConnectionWrapper;
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.Entities.Base;
 using OrganizationData.Data.Helpers;
@@ -7,18 +8,16 @@ namespace OrganizationData.Data.Repositories
 {
     internal class Repository<T> : IRepository<T> where T : class, IEntity
     {
-        private readonly SqlTransaction _transaction;
-        private readonly SqlConnection _connection;
+        private readonly ISqlConnectionWrapper _sqlConnectionWrapper;
 
         private readonly string _insertQuery;
         private readonly string _updateQuery;
         private readonly string _getByIdQuery;
         private readonly string _getAllQuery;
 
-        public Repository(SqlConnection sqlConnection, SqlTransaction sqlTransaction)
+        public Repository(ISqlConnectionWrapper sqlConnectionWrapper)
         {
-            _connection = sqlConnection;
-            _transaction = sqlTransaction;
+            _sqlConnectionWrapper = sqlConnectionWrapper;
 
             _insertQuery = SqlQueryGeneratorHelper.GenerateInsertQuery<T>();
             _updateQuery = SqlQueryGeneratorHelper.GenerateUpdateQuery<T>();
@@ -59,9 +58,9 @@ namespace OrganizationData.Data.Repositories
 
         protected SqlCommand CreateCommand(string query)
         {
-            SqlCommand sqlCommand = _connection.CreateCommand();
+            SqlCommand sqlCommand = _sqlConnectionWrapper.SqlConnection.CreateCommand();
             sqlCommand.CommandText = query;
-            sqlCommand.Transaction = _transaction;
+            sqlCommand.Transaction = _sqlConnectionWrapper.SqlTransaction;
 
             return sqlCommand;
         }

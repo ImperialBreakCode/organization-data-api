@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.Entities;
 using OrganizationData.Data.Helpers;
@@ -7,8 +7,8 @@ namespace OrganizationData.Data.Repositories
 {
     internal class CountryRepository : Repository<Country>, ICountryRepository
     {
-        public CountryRepository(SqlConnection sqlConnection, SqlTransaction sqlTransaction) 
-            : base(sqlConnection, sqlTransaction)
+        public CountryRepository(ISqlConnectionWrapper sqlConnectionWrapper) 
+            : base(sqlConnectionWrapper)
         {
         }
 

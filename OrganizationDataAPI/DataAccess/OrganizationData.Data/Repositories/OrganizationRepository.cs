@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.Entities;
 using OrganizationData.Data.Helpers;
@@ -9,8 +9,8 @@ namespace OrganizationData.Data.Repositories
     {
         private readonly string _junctionSelectQuery;
 
-        public OrganizationRepository(SqlConnection sqlConnection, SqlTransaction sqlTransaction) 
-            : base(sqlConnection, sqlTransaction)
+        public OrganizationRepository(ISqlConnectionWrapper sqlConnectionWrapper) 
+            : base(sqlConnectionWrapper)
         {
             _junctionSelectQuery = $"SELECT * FROM {nameof(IndustryOrganization)} WHERE OrganizatioId=@organizationId";
         }

@@ -1,6 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Abstractions.Repository;
+using OrganizationData.Data.DbConnectionWrapper;
 using OrganizationData.Data.Entities;
 using OrganizationData.Data.Repositories;
 
@@ -8,8 +9,7 @@ namespace OrganizationData.Data.DbContext
 {
     internal class OrganizationDbContext : IOrganizationDbContext
     {
-        private readonly SqlConnection _sqlConnection;
-        private SqlTransaction _sqlTransaction;
+        private readonly ISqlConnectionWrapper _sqlConnectionWrapper;
 
         private IRepositoryFactory _repositoryFactory;
 
@@ -21,7 +21,7 @@ namespace OrganizationData.Data.DbContext
 
         public OrganizationDbContext()
         {
-            _sqlConnection = new SqlConnection();
+            _sqlConnectionWrapper = new SqlConnectionWrapper();
             _isSet = false;
         }
 
@@ -38,11 +38,9 @@ namespace OrganizationData.Data.DbContext
         {
             if (!_isSet)
             {
-                _sqlConnection.ConnectionString = connectionString;
-                _sqlConnection.Open();
-                _sqlTransaction = _sqlConnection.BeginTransaction();
-
-                _repositoryFactory = new SqlRepositoryFactory(_sqlConnection, _sqlTransaction);
+                _sqlConnectionWrapper.ConnectToDb(connectionString);
+                _sqlConnectionWrapper.BeginNewTransaction();
+                _repositoryFactory = new SqlRepositoryFactory(_sqlConnectionWrapper);
 
                 _isSet = true;
             }
@@ -50,20 +48,20 @@ namespace OrganizationData.Data.DbContext
 
         public void SaveChanges()
         {
-            _sqlTransaction.Commit();
-            _sqlTransaction = _sqlConnection.BeginTransaction();
+            _sqlConnectionWrapper.SqlTransaction.Commit();
+            _sqlConnectionWrapper.BeginNewTransaction();
         }
 
         public void DiscardChanges()
         {
-            _sqlTransaction.Rollback();
-            _sqlTransaction = _sqlConnection.BeginTransaction();
+            _sqlConnectionWrapper.SqlTransaction.Rollback();
+            _sqlConnectionWrapper.BeginNewTransaction();
         }
 
         public void Dispose()
         {
-            _sqlTransaction?.Dispose();
-            _sqlConnection?.Dispose();
+            _sqlConnectionWrapper.SqlTransaction?.Dispose();
+            _sqlConnectionWrapper.SqlConnection?.Dispose();
         }
     }
 }

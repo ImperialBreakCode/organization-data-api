@@ -2,7 +2,6 @@
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.DbConnectionWrapper;
-using OrganizationData.Data.Entities;
 using OrganizationData.Data.Repositories;
 
 namespace OrganizationData.Data.DbContext
@@ -15,7 +14,7 @@ namespace OrganizationData.Data.DbContext
 
         private IOrganizationRepository _organizationRepository;
         private ICountryRepository _countryRepository;
-        private IRepositoryWithJunction<Industry, IndustryOrganization> _industryRepository;
+        private IIndustryRepository _industryRepository;
 
         private bool _isSet;
 
@@ -31,8 +30,8 @@ namespace OrganizationData.Data.DbContext
         public ICountryRepository Country 
             => _countryRepository ??= _repositoryFactory.CreateCountryRepository();
 
-        public IRepositoryWithJunction<Industry, IndustryOrganization> Industry 
-            => _industryRepository ??= _repositoryFactory.CreateGenericRepositoryWithJunction<Industry, IndustryOrganization>();
+        public IIndustryRepository Industry 
+            => _industryRepository ??= _repositoryFactory.CreateIndustryRepository();
 
         public void Setup(string connectionString)
         {

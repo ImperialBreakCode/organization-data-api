@@ -1,5 +1,4 @@
 ﻿using OrganizationData.Data.Abstractions.Repository;
-using OrganizationData.Data.Entities;
 
 namespace OrganizationData.Data.Abstractions.DbContext
 {
@@ -7,7 +6,7 @@ namespace OrganizationData.Data.Abstractions.DbContext
     {
         IOrganizationRepository Organization { get; }
         ICountryRepository Country { get; }
-        IRepositoryWithJunction<Industry, IndustryOrganization> Industry { get; }
+        IIndustryRepository Industry { get; }
 
         void Setup(string connectionString);
 

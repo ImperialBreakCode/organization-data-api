@@ -2,6 +2,7 @@
 using OrganizationData.Application.Abstractions.Services;
 using OrganizationData.Application.Abstractions.Services.Filter;
 using OrganizationData.Application.DTO.Country;
+using OrganizationData.Application.DTO.Industry;
 using OrganizationData.Application.ResponseMessage;
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Entities;
@@ -25,7 +26,7 @@ namespace OrganizationData.Application.Services
             var result = _dataFilter.CheckSingle(country);
             if (result.Success)
             {
-                return ResponseMessages.CountryWithNameConflict;
+                return ResponseMessages.CountryNameConflict;
             }
 
             Country newCountry = new Country()
@@ -64,6 +65,13 @@ namespace OrganizationData.Application.Services
                 return filterResult.ErrorMessage!;
             }
 
+            var countryWithTheChosenName = _organizationDbContext.Country.GetNonDeletedCountryByName(updateCountryDTO.CountryName);
+            filterResult = _dataFilter.CheckSingle(countryWithTheChosenName);
+            if (filterResult.Success)
+            {
+                return ResponseMessages.CountryNameConflict;
+            }
+
             country!.CountryName = updateCountryDTO.CountryName;
 
             _organizationDbContext.Country.Update(country);
@@ -77,7 +85,20 @@ namespace OrganizationData.Application.Services
             var country = _organizationDbContext.Country.GetById(id);
             var filterResult = _dataFilter.CheckSingle(country);
 
-            if (filterResult.Success)
+            return ReturnGetResult(country, filterResult);
+        }
+
+        public ServiceGetResult<GetCountryResponse> GetCountryByName(string name)
+        {
+            var country = _organizationDbContext.Country.GetNonDeletedCountryByName(name);
+            var result = _dataFilter.CheckSingle(country);
+            
+            return ReturnGetResult(country, result);
+        }
+
+        private ServiceGetResult<GetCountryResponse> ReturnGetResult(Country? country, FilterResult result)
+        {
+            if (result.Success)
             {
                 return new ServiceGetResult<GetCountryResponse>()
                 {
@@ -87,25 +108,7 @@ namespace OrganizationData.Application.Services
 
             return new ServiceGetResult<GetCountryResponse>()
             {
-                ErrorMessage = filterResult.ErrorMessage!
-            };
-        }
-
-        public ServiceGetResult<GetCountryResponse> GetCountryByName(string name)
-        {
-            var country = _organizationDbContext.Country.GetNonDeletedCountryByName(name);
-            var result = _dataFilter.CheckSingle(country);
-            if (!result.Success)
-            {
-                return new ServiceGetResult<GetCountryResponse>()
-                {
-                    ErrorMessage = result.ErrorMessage
-                };
-            }
-
-            return new ServiceGetResult<GetCountryResponse>()
-            {
-                Result = new GetCountryResponse(country!.Id, country.CountryName, country.CreatedAt)
+                ErrorMessage = result.ErrorMessage
             };
         }
     }

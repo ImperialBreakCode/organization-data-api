@@ -9,10 +9,12 @@
                 case ResponseMessages.DataNotFound:
                     return ResponseType.NotFound;
 
-                case ResponseMessages.CountryWithNameConflict:
+                case ResponseMessages.CountryNameConflict:
+                case ResponseMessages.IndustryNameConflict:
                     return ResponseType.Conflict;
 
                 case ResponseMessages.CountryCreated:
+                case ResponseMessages.IndustryCreated:
                     return ResponseType.Created;
 
                 default:

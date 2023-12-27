@@ -19,14 +19,9 @@ namespace OrganizationData.Application
 
             services.AddTransient<IDataFilter, DataFilter>();
 
-            services.AddCountryService();
-
-            return services;
-        }
-
-        public static IServiceCollection AddCountryService(this IServiceCollection services)
-        {
             services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<IIndustryService, IndustryService>();
+
             return services;
         }
     }

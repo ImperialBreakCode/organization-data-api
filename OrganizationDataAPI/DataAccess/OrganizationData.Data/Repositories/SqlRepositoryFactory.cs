@@ -1,7 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
-using OrganizationData.Data.Abstractions.DbConnectionWrapper;
+﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
 using OrganizationData.Data.Abstractions.Repository;
-using OrganizationData.Data.Entities.Base;
 
 namespace OrganizationData.Data.Repositories
 {
@@ -19,16 +17,14 @@ namespace OrganizationData.Data.Repositories
             return new OrganizationRepository(_connectionWrapper);
         }
 
-        public IRepositoryWithJunction<T, TJunction> CreateGenericRepositoryWithJunction<T, TJunction>()
-            where T : class, IEntity
-            where TJunction : class
-        {
-            return new RepositoryWithJunction<T, TJunction>(_connectionWrapper);
-        }
-
         public ICountryRepository CreateCountryRepository()
         {
             return new CountryRepository(_connectionWrapper);
+        }
+
+        public IIndustryRepository CreateIndustryRepository()
+        {
+            return new IndustryRepository(_connectionWrapper);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using OrganizationData.Data.Abstractions;
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.Entities;

@@ -21,9 +21,9 @@ namespace OrganizationData.Application.Services
 
         public string AddCountry(CreateCountryRequestDTO createCountryDTO)
         {
-            var countries = _organizationDbContext.Country.GetCountriesByName(createCountryDTO.CountryName);
-            var country = _dataFilter.FilterData(countries).FirstOrDefault();
-            if (country is not null)
+            var country = _organizationDbContext.Country.GetNonDeletedCountryByName(createCountryDTO.CountryName);
+            var result = _dataFilter.CheckSingle(country);
+            if (result.Success)
             {
                 return ResponseMessages.CountryWithNameConflict;
             }
@@ -93,19 +93,19 @@ namespace OrganizationData.Application.Services
 
         public ServiceGetResult<GetCountryResponse> GetCountryByName(string name)
         {
-            var countries = _organizationDbContext.Country.GetCountriesByName(name);
-            Country? country = _dataFilter.FilterData(countries).FirstOrDefault();
-            if (country is null)
+            var country = _organizationDbContext.Country.GetNonDeletedCountryByName(name);
+            var result = _dataFilter.CheckSingle(country);
+            if (!result.Success)
             {
                 return new ServiceGetResult<GetCountryResponse>()
                 {
-                    ErrorMessage = ResponseMessages.DataNotFound
+                    ErrorMessage = result.ErrorMessage
                 };
             }
 
             return new ServiceGetResult<GetCountryResponse>()
             {
-                Result = new GetCountryResponse(country.Id, country.CountryName, country.CreatedAt)
+                Result = new GetCountryResponse(country!.Id, country.CountryName, country.CreatedAt)
             };
         }
     }

@@ -51,7 +51,7 @@ namespace OrganizationData.API.Controllers
 
             if (responseType == ResponseType.Created)
             {
-                return Created();
+                return Created($"/api/GetCountryByName/{dto.CountryName}", dto);
             }
 
             return this.ParseAndReturnMessage(result);

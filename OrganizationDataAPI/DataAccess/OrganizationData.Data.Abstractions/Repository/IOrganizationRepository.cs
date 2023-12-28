@@ -6,5 +6,6 @@ namespace OrganizationData.Data.Abstractions.Repository
     public interface IOrganizationRepository : IRepoInsert<Organization>, IRepoUpdate<Organization>, IRepoJunction<IndustryOrganization>
     {
         Organization? GetByOrganizationId(string organizationId);
+        ICollection<IndustryOrganization> GetChildrenFromJunction(string id);
     }
 }

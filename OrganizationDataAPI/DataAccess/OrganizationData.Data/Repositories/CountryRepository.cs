@@ -19,5 +19,14 @@ namespace OrganizationData.Data.Repositories
 
             return EntityConverterHelper.ToEntityCollection<Country>(command).FirstOrDefault();
         }
+
+        public override void SoftDelete(Country entity)
+        {
+            var command = CreateCommand($"Update [{nameof(Organization)}] SET CountryId=NULL WHERE CountryId=@countryId");
+            command.Parameters.AddWithValue("@countryId", entity.Id);
+            command.ExecuteNonQuery();
+
+            base.SoftDelete(entity);
+        }
     }
 }

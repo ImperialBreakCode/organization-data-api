@@ -2,7 +2,7 @@
 {
     public interface IRepoJunction<TJunctionEntity> where TJunctionEntity : class 
     {
-        void ConnectToJunctionEntity(TJunctionEntity entity);
-        void DisconnectFromJunctionEntity(TJunctionEntity entity);
+        void AddJunctionEntity(TJunctionEntity entity);
+        void RemoveJunctionEntity(TJunctionEntity entity);
     }
 }

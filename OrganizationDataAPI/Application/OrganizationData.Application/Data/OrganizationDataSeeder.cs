@@ -41,13 +41,13 @@ namespace OrganizationData.Application.Data
             context.Industry.Insert(industry);
             context.Industry.Insert(industry2);
 
-            context.Organization.ConnectToJunctionEntity(new IndustryOrganization()
+            context.Organization.AddJunctionEntity(new IndustryOrganization()
             {
                 IndustryId = industry.Id,
                 OrganizationId = organization.Id
             });
 
-            context.Industry.ConnectToJunctionEntity(new IndustryOrganization()
+            context.Industry.AddJunctionEntity(new IndustryOrganization()
             {
                 IndustryId = industry2.Id,
                 OrganizationId = organization.Id

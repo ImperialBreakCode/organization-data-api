@@ -29,5 +29,17 @@ namespace OrganizationData.Data.Repositories
 
             return EntityConverterHelper.ToEntityCollection<Organization>(command).FirstOrDefault();
         }
+
+        public override void SoftDelete(Organization entity)
+        {
+            var children = GetChildrenFromJunction(entity.Id);
+
+            foreach (var child in children)
+            {
+                RemoveJunctionEntity(child);
+            }
+
+            base.SoftDelete(entity);
+        }
     }
 }

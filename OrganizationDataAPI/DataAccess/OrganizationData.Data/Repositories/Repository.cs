@@ -47,6 +47,12 @@ namespace OrganizationData.Data.Repositories
             command.ExecuteNonQuery();
         }
 
+        public virtual void SoftDelete(T entity)
+        {
+            entity.DeletedAt = DateTime.UtcNow;
+            Update(entity);
+        }
+
         public void Update(T entity)
         {
             var command = CreateCommand(UpdateQuery);

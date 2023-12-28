@@ -11,6 +11,7 @@ namespace OrganizationData.Data.Repositories
     {
         private readonly string _junctionInsertQuery;
         private readonly string _junctionDeleteQuery;
+        private readonly string _deleteAllJunctions;
 
         public RepositoryWithJunction(ISqlConnectionWrapper sqlConnectionWrapper) 
             : base(sqlConnectionWrapper)
@@ -19,14 +20,14 @@ namespace OrganizationData.Data.Repositories
             _junctionDeleteQuery = SqlQueryGeneratorHelper.GenerateFullDeleteQuery<TJUnctionEntity>();
         }
 
-        public void ConnectToJunctionEntity(TJUnctionEntity entity)
+        public void AddJunctionEntity(TJUnctionEntity entity)
         {
             var command = CreateCommand(_junctionInsertQuery);
             EntityConverterHelper.ToQuery(entity, command);
             command.ExecuteNonQuery();
         }
 
-        public void DisconnectFromJunctionEntity(TJUnctionEntity entity)
+        public void RemoveJunctionEntity(TJUnctionEntity entity)
         {
             var command = CreateCommand(_junctionDeleteQuery);
             EntityConverterHelper.ToQuery(entity, command);

@@ -4,7 +4,7 @@ using OrganizationData.Application.ResponseMessage;
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Entities;
 
-namespace OrganizationData.Application.Services.Organization
+namespace OrganizationData.Application.Services.OrganizationServices
 {
     internal class OrganizationDataHelper : IOrganizationDataHelper
     {
@@ -21,11 +21,18 @@ namespace OrganizationData.Application.Services.Organization
             _context = context;
         }
 
-        public void AddOrganizationIndustry(string id, string industryName)
+        public string? AddOrganizationIndustry(string id, string industryName)
         {
+            ICollection<IndustryOrganization> junctions = _context.Organization.GetChildrenFromJunction(id);
+
             Industry? industry = _context.Industry.GetNonDeletedIndustryByName(industryName);
             var filterResult = _dataFilter.CheckSingle(industry);
-            if (!filterResult.Success)
+
+            if (filterResult.Success && junctions.Any(j => j.IndustryId == industry!.Id))
+            {
+                return ServiceMessages.OrganizationIndusryAlreadyExists;
+            }
+            else if(!filterResult.Success)
             {
                 industry = new Industry()
                 {
@@ -40,6 +47,8 @@ namespace OrganizationData.Application.Services.Organization
                 OrganizationId = id,
                 IndustryId = industry!.Id
             });
+
+            return null;
         }
 
         public ICollection<Industry> GetOrganizationIndusties(string id)
@@ -52,18 +61,18 @@ namespace OrganizationData.Application.Services.Organization
             return industries;
         }
 
-        public string? RemoveOrganizationIndustry(string id, string industryId)
+        public string? RemoveOrganizationIndustry(string id, string industryName)
         {
-            Industry? industry = _context.Industry.GetNonDeletedIndustryByName(industryId);
+            Industry? industry = _context.Industry.GetNonDeletedIndustryByName(industryName);
             var filterResult = _dataFilter.CheckSingle(industry);
             if (!filterResult.Success)
             {
-                return ResponseMessages.DataNotFound;
+                return ServiceMessages.DataNotFound;
             }
 
             _context.Organization.RemoveJunctionEntity(new()
             {
-                IndustryId = industryId,
+                IndustryId = industry!.Id,
                 OrganizationId = id
             });
 

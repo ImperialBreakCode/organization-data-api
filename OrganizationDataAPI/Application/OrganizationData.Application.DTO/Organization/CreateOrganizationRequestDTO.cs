@@ -6,7 +6,7 @@
         string Website, 
         string Country, 
         string Description,
-        string Founded,
+        int Founded,
         ICollection<string> Industries,
-        string NumberOfEmployees);
+        int NumberOfEmployees);
 }

@@ -10,13 +10,14 @@ CREATE TABLE [Organization](
     Id varchar(36) NOT NULL PRIMARY KEY,
     CreatedAt datetime NOT NULL,
     DeletedAt datetime NULL,
-    OrganizationId varchar(50) NOT NULL UNIQUE,
+    OrganizationId varchar(50) NOT NULL,
     Name varchar(128) NOT NULL,
     Website varchar(265) NOT NULL,
     Description text NOT NULL,
     Founded int NOT NULL,
     NumberOfEmployees int NOT NULL,
-    CountryId varchar(36) FOREIGN KEY REFERENCES [Country](Id) ON DELETE SET NULL
+    CountryId varchar(36) FOREIGN KEY REFERENCES [Country](Id) ON DELETE SET NULL,
+    UNIQUE(OrganizationId, DeletedAt)
 );
 
 CREATE TABLE [Industry](

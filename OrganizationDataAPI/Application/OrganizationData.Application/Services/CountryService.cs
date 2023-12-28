@@ -2,7 +2,6 @@
 using OrganizationData.Application.Abstractions.Services;
 using OrganizationData.Application.Abstractions.Services.Filter;
 using OrganizationData.Application.DTO.Country;
-using OrganizationData.Application.DTO.Industry;
 using OrganizationData.Application.ResponseMessage;
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Entities;
@@ -26,7 +25,7 @@ namespace OrganizationData.Application.Services
             var result = _dataFilter.CheckSingle(country);
             if (result.Success)
             {
-                return ResponseMessages.CountryNameConflict;
+                return ServiceMessages.CountryNameConflict;
             }
 
             Country newCountry = new Country()
@@ -37,7 +36,7 @@ namespace OrganizationData.Application.Services
             _organizationDbContext.Country.Insert(newCountry);
             _organizationDbContext.SaveChanges();
 
-            return ResponseMessages.CountryCreated;
+            return ServiceMessages.CountryCreated;
         }
 
         public string DeleteCountryById(string id)
@@ -49,11 +48,10 @@ namespace OrganizationData.Application.Services
                 return filterResult.ErrorMessage!;
             }
 
-            country!.DeletedAt = DateTime.UtcNow;
-            _organizationDbContext.Country.Update(country);
+            _organizationDbContext.Country.SoftDelete(country!);
             _organizationDbContext.SaveChanges();
 
-            return ResponseMessages.CountryDeleted;
+            return ServiceMessages.CountryDeleted;
         }
 
         public string UpdateCountryName(string id, UpdateCountryNameRequestDTO updateCountryDTO)
@@ -69,7 +67,7 @@ namespace OrganizationData.Application.Services
             filterResult = _dataFilter.CheckSingle(countryWithTheChosenName);
             if (filterResult.Success)
             {
-                return ResponseMessages.CountryNameConflict;
+                return ServiceMessages.CountryNameConflict;
             }
 
             country!.CountryName = updateCountryDTO.CountryName;
@@ -77,7 +75,7 @@ namespace OrganizationData.Application.Services
             _organizationDbContext.Country.Update(country);
             _organizationDbContext.SaveChanges();
 
-            return ResponseMessages.CountryUpdated;
+            return ServiceMessages.CountryUpdated;
         }
 
         public ServiceGetResult<GetCountryResponse> GetCountryById(string id)

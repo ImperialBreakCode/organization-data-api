@@ -26,7 +26,7 @@ namespace OrganizationData.Application.Services
 
             if (result.Success)
             {
-                return ResponseMessages.IndustryNameConflict;
+                return ServiceMessages.IndustryNameConflict;
             }
 
             Industry newIndustry = new()
@@ -37,7 +37,7 @@ namespace OrganizationData.Application.Services
             _organizationDbContext.Industry.Insert(newIndustry);
             _organizationDbContext.SaveChanges();
 
-            return ResponseMessages.IndustryCreated;
+            return ServiceMessages.IndustryCreated;
         }
 
         public string DeleteIndustryById(string id)
@@ -49,11 +49,10 @@ namespace OrganizationData.Application.Services
                 return result.ErrorMessage!;
             }
 
-            industry!.DeletedAt = DateTime.UtcNow;
-            _organizationDbContext.Industry.Update(industry);
+            _organizationDbContext.Industry.SoftDelete(industry!);
             _organizationDbContext.SaveChanges();
 
-            return ResponseMessages.CountryDeleted;
+            return ServiceMessages.IndustryDeleted;
         }
 
         public ServiceGetResult<GetIndustryResponseDTO> GetByIndustryById(string id)
@@ -85,7 +84,7 @@ namespace OrganizationData.Application.Services
             filterResult = _dataFilter.CheckSingle(industryWithTheChosenName);
             if (filterResult.Success)
             {
-                return ResponseMessages.IndustryNameConflict;
+                return ServiceMessages.IndustryNameConflict;
             }
 
             industry!.IndustryName = updateIndustryDTO.IndustryName;
@@ -93,7 +92,7 @@ namespace OrganizationData.Application.Services
             _organizationDbContext.Industry.Update(industry);
             _organizationDbContext.SaveChanges();
 
-            return ResponseMessages.IndustryUpdated;
+            return ServiceMessages.IndustryUpdated;
         }
 
         private ServiceGetResult<GetIndustryResponseDTO> ReturnGetResult(Industry? industry, FilterResult result)

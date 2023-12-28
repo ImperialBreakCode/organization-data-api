@@ -6,15 +6,18 @@
         {
             switch (response)
             {
-                case ResponseMessages.DataNotFound:
+                case ServiceMessages.DataNotFound:
                     return ResponseType.NotFound;
 
-                case ResponseMessages.CountryNameConflict:
-                case ResponseMessages.IndustryNameConflict:
+                case ServiceMessages.CountryNameConflict:
+                case ServiceMessages.IndustryNameConflict:
+                case ServiceMessages.OrganizationIndusryAlreadyExists:
+                case ServiceMessages.OrganizationIdConflict:
                     return ResponseType.Conflict;
 
-                case ResponseMessages.CountryCreated:
-                case ResponseMessages.IndustryCreated:
+                case ServiceMessages.CountryCreated:
+                case ServiceMessages.IndustryCreated:
+                case ServiceMessages.OrganizationCreated:
                     return ResponseType.Created;
 
                 default:

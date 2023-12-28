@@ -13,7 +13,7 @@ namespace OrganizationData.Application.Services
                 return new FilterResult()
                 {
                     Success = false,
-                    ErrorMessage = ResponseMessages.DataNotFound
+                    ErrorMessage = ServiceMessages.DataNotFound
                 };
             }
 

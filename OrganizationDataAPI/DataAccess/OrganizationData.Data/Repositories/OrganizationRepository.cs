@@ -12,7 +12,7 @@ namespace OrganizationData.Data.Repositories
         public OrganizationRepository(ISqlConnectionWrapper sqlConnectionWrapper) 
             : base(sqlConnectionWrapper)
         {
-            _junctionSelectQuery = $"SELECT * FROM {nameof(IndustryOrganization)} WHERE OrganizatioId=@organizationId";
+            _junctionSelectQuery = $"SELECT * FROM {nameof(IndustryOrganization)} WHERE {nameof(IndustryOrganization.OrganizationId)}=@organizationId";
         }
 
         public ICollection<IndustryOrganization> GetChildrenFromJunction(string id)
@@ -24,7 +24,7 @@ namespace OrganizationData.Data.Repositories
 
         public Organization? GetByOrganizationId(string organizationId)
         {
-            var command = CreateCommand($"SELECT * FROM [{nameof(Organization)}] WHERE OrganizationId=@organizationId");
+            var command = CreateCommand($"SELECT * FROM [{nameof(Organization)}] WHERE {nameof(IndustryOrganization.OrganizationId)}=@organizationId");
             command.Parameters.AddWithValue("@organizationId", organizationId);
 
             return EntityConverterHelper.ToEntityCollection<Organization>(command).FirstOrDefault();

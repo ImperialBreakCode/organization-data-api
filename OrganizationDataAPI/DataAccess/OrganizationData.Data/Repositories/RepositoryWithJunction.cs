@@ -11,7 +11,6 @@ namespace OrganizationData.Data.Repositories
     {
         private readonly string _junctionInsertQuery;
         private readonly string _junctionDeleteQuery;
-        private readonly string _deleteAllJunctions;
 
         public RepositoryWithJunction(ISqlConnectionWrapper sqlConnectionWrapper) 
             : base(sqlConnectionWrapper)

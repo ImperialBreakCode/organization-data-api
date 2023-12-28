@@ -24,7 +24,7 @@
             var properties = typeof(T).GetProperties();
             var whereList = properties.Select(p => $"{p.Name} = @{p.Name}");
 
-            return $"DELETE FROM [{typeof(T).Name}] WHERE {string.Join(", ", whereList)}";
+            return $"DELETE FROM [{typeof(T).Name}] WHERE {string.Join(" AND ", whereList)}";
         }
     }
 }

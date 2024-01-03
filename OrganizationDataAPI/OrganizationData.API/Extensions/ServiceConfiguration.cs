@@ -12,11 +12,14 @@ namespace OrganizationData.API.Extensions
         {
             builder.Services.Configure<ConnectionStringsOptions>(
                 builder.Configuration.GetSection("ConnectionStrings"));
+
+            builder.Services.Configure<OrganizationApiOptions>(
+                builder.Configuration.GetSection(nameof(OrganizationApiOptions)));
         }
 
         public static IServiceCollection ConfigureOrganizationApplication(this IServiceCollection services)
         {
-            services.AddApplication();
+            services.AddApplication().AddFileDataServices();
 
             services.AddTransient<IOrganizationSettings, OrganizationSettings>();
 

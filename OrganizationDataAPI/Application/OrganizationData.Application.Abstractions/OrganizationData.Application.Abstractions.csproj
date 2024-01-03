@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="30.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\DataAccess\OrganizationData.Data\OrganizationData.Data.csproj" />
     <ProjectReference Include="..\OrganizationData.Application.DTO\OrganizationData.Application.DTO.csproj" />
   </ItemGroup>

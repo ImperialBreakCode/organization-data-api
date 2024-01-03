@@ -3,5 +3,7 @@
     public interface IOrganizationSettings
     {
         string ConnectionString { get; }
+        string FileReaderDir { get; }
+        string ProcessedFilesDir { get; }
     }
 }

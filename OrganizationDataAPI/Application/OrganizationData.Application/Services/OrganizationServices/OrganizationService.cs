@@ -33,7 +33,6 @@ namespace OrganizationData.Application.Services.OrganizationServices
             var filterResult = _dataFilter.CheckSingle(organization);
             if (!filterResult.Success)
             {
-                _context.DiscardChanges();
                 return filterResult.ErrorMessage!;
             }
 

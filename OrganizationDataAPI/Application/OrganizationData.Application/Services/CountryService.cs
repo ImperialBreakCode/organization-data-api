@@ -28,7 +28,7 @@ namespace OrganizationData.Application.Services
                 return ServiceMessages.CountryNameConflict;
             }
 
-            Country newCountry = new Country()
+            Country newCountry = new()
             {
                 CountryName = createCountryDTO.CountryName
             };

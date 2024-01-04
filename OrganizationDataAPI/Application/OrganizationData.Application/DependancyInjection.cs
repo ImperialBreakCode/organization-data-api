@@ -2,6 +2,7 @@
 using OrganizationData.Application.Abstractions.Data;
 using OrganizationData.Application.Abstractions.FileData;
 using OrganizationData.Application.Abstractions.Services;
+using OrganizationData.Application.Abstractions.Services.Factories;
 using OrganizationData.Application.Abstractions.Services.Filter;
 using OrganizationData.Application.Abstractions.Services.Organization;
 using OrganizationData.Application.Data;
@@ -9,6 +10,7 @@ using OrganizationData.Application.FileData;
 using OrganizationData.Application.Mapper;
 using OrganizationData.Application.QuartzConfig;
 using OrganizationData.Application.Services;
+using OrganizationData.Application.Services.Factories;
 using OrganizationData.Application.Services.OrganizationServices;
 using OrganizationData.Data;
 using Quartz;
@@ -21,15 +23,17 @@ namespace OrganizationData.Application
         {
             services.AddAutoMapper(cfg =>
             {
-                cfg.AddProfile<DTOMappingProfile>();
+                cfg.AddProfile<OrganizationMappingProfile>();
+                cfg.AddProfile<CountryMappingProfile>();
+                cfg.AddProfile<IndustryMappingProfile>();
             });
 
             services.AddOrganizationDataLayer();
 
             services.AddTransient<IOrganizationData, OrganizationDataManager>();
-            services.AddTransient<IOrganizationDataSeeder, OrganizationDataSeeder>();
 
             services.AddTransient<IDataFilter, DataFilter>();
+            services.AddTransient<IServiceGetResultFactory, ServiceGetResultFactory>();
 
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IIndustryService, IndustryService>();

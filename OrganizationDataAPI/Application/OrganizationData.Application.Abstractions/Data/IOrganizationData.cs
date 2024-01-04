@@ -5,8 +5,6 @@ namespace OrganizationData.Application.Abstractions.Data
     public interface IOrganizationData : IDisposable
     {
         IOrganizationDbContext DbContext { get; }
-
         void EnsureDatabase();
-        void SeedData();
     }
 }

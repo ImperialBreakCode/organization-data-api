@@ -10,18 +10,15 @@ namespace OrganizationData.Application.Data
         private readonly IOrganizationDbManager _organizationDbManager;
         private readonly IOrganizationDbContext _organizationDbContext;
         private readonly IOrganizationSettings _organizationSettings;
-        private readonly IOrganizationDataSeeder _seeder;
 
         public OrganizationDataManager(
             IOrganizationDbManager organizationDbManager,
             IOrganizationDbContext organizationDbContext,
-            IOrganizationSettings organizationSettings,
-            IOrganizationDataSeeder seeder)
+            IOrganizationSettings organizationSettings)
         {
             _organizationDbManager = organizationDbManager;
             _organizationSettings = organizationSettings;
             _organizationDbContext = organizationDbContext;
-            _seeder = seeder;
 
             _organizationDbContext.Setup(_organizationSettings.ConnectionString);
         }
@@ -32,11 +29,6 @@ namespace OrganizationData.Application.Data
         public void EnsureDatabase()
         {
             _organizationDbManager.EnsureDatabaseTables(_organizationSettings.ConnectionString);
-        }
-
-        public void SeedData()
-        {
-            _seeder.SeedData(DbContext);
         }
 
         public void Dispose()

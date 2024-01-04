@@ -1,4 +1,6 @@
-﻿namespace OrganizationData.Data.Abstractions.Repository.RepoCommon
+﻿using OrganizationData.Data.Abstractions.Repository;
+
+namespace OrganizationData.Data.Abstractions.Factories
 {
     public interface IRepositoryFactory
     {

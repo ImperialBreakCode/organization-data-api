@@ -1,4 +1,9 @@
 ﻿namespace OrganizationData.Application.DTO.Industry
 {
-    public record GetIndustryResponseDTO(string Id, string IndustryName, DateTime CreatedAt);
+    public class GetIndustryResponseDTO
+    {
+        public string Id { get; set; } 
+        public string IndustryName { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
 }

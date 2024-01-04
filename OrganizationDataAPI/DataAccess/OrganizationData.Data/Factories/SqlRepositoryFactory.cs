@@ -1,8 +1,9 @@
 ﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
+using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Abstractions.Repository;
-using OrganizationData.Data.Abstractions.Repository.RepoCommon;
+using OrganizationData.Data.Repositories;
 
-namespace OrganizationData.Data.Repositories.RepoCommon
+namespace OrganizationData.Data.Factories
 {
     internal class SqlRepositoryFactory : IRepositoryFactory
     {

@@ -7,9 +7,9 @@ using OrganizationData.Data.Entities.QueryStatsResults;
 
 namespace OrganizationData.Application.Mapper
 {
-    internal class DTOMappingProfile : Profile
+    internal class OrganizationMappingProfile : Profile
     {
-        public DTOMappingProfile()
+        public OrganizationMappingProfile()
         {
             CreateMap<Organization, GetOrganizationResponseDTO>();
             CreateMap<UpdateOrganizationRequestDTO, Organization>();

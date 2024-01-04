@@ -2,6 +2,7 @@
 using OrganizationData.Application.Abstractions.Services.Organization;
 using OrganizationData.Application.ResponseMessage;
 using OrganizationData.Data.Abstractions.DbContext;
+using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Entities;
 
 namespace OrganizationData.Application.Services.OrganizationServices
@@ -10,10 +11,12 @@ namespace OrganizationData.Application.Services.OrganizationServices
     {
         private IOrganizationDbContext _context;
         private IDataFilter _dataFilter;
+        private IEntityFactory _entityFactory;
 
-        public OrganizationDataHelper(IDataFilter dataFilter)
+        public OrganizationDataHelper(IDataFilter dataFilter, IEntityFactory entityFactory)
         {
             _dataFilter = dataFilter;
+            _entityFactory = entityFactory;
         }
 
         public void SetOrganizationDbContext(IOrganizationDbContext context)
@@ -34,19 +37,12 @@ namespace OrganizationData.Application.Services.OrganizationServices
             }
             else if(!filterResult.Success)
             {
-                industry = new Industry()
-                {
-                    IndustryName = industryName
-                };
+                industry = _entityFactory.CreateIndustryEntity(industryName);
 
                 _context.Industry.Insert(industry);
             }
 
-            _context.Organization.AddJunctionEntity(new()
-            {
-                OrganizationId = id,
-                IndustryId = industry!.Id
-            });
+            _context.Organization.AddJunctionEntity(_entityFactory.CreateIndustryOrganizationJunction(id, industry!.Id));
 
             return null;
         }
@@ -70,11 +66,8 @@ namespace OrganizationData.Application.Services.OrganizationServices
                 return ServiceMessages.DataNotFound;
             }
 
-            _context.Organization.RemoveJunctionEntity(new()
-            {
-                IndustryId = industry!.Id,
-                OrganizationId = id
-            });
+            _context.Organization
+                .RemoveJunctionEntity(_entityFactory.CreateIndustryOrganizationJunction(id, industry!.Id));
 
             return null;
         }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Abstractions.DbManager;
+using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.DbContext;
 using OrganizationData.Data.DbManager;
+using OrganizationData.Data.Factories;
 
 namespace OrganizationData.Data
 {
@@ -14,6 +16,8 @@ namespace OrganizationData.Data
             services.AddTransient<IOrganizationDbManager, OrganizationDbManager>();
             services.AddTransient<IOrganizationTableExistenceChecker, OrganizationTableExistenceChecker>();
             services.AddTransient<IOrganizationTableCreator, OrganizationTableCreator>();
+
+            services.AddTransient<IEntityFactory, EntityFactory>();
 
             return services;
         }

@@ -7,6 +7,7 @@ namespace OrganizationData.Data.Abstractions.DbContext
         IOrganizationRepository Organization { get; }
         ICountryRepository Country { get; }
         IIndustryRepository Industry { get; }
+        IStatsRepository Stats { get; }
 
         void Setup(string connectionString);
 

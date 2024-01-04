@@ -1,9 +1,9 @@
 ﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
-using OrganizationData.Data.Abstractions.Repository;
+using OrganizationData.Data.Abstractions.Repository.RepoCommon;
 using OrganizationData.Data.Entities.Base;
 using OrganizationData.Data.Helpers;
 
-namespace OrganizationData.Data.Repositories
+namespace OrganizationData.Data.Repositories.RepoCommon
 {
     internal class RepositoryWithJunction<T, TJUnctionEntity> : Repository<T>, IRepositoryWithJunction<T, TJUnctionEntity>
         where T : class, IEntity
@@ -12,7 +12,7 @@ namespace OrganizationData.Data.Repositories
         private readonly string _junctionInsertQuery;
         private readonly string _junctionDeleteQuery;
 
-        public RepositoryWithJunction(ISqlConnectionWrapper sqlConnectionWrapper) 
+        public RepositoryWithJunction(ISqlConnectionWrapper sqlConnectionWrapper)
             : base(sqlConnectionWrapper)
         {
             _junctionInsertQuery = SqlQueryGeneratorHelper.GenerateInsertQuery<TJUnctionEntity>();

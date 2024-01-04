@@ -2,6 +2,7 @@
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.Entities;
 using OrganizationData.Data.Helpers;
+using OrganizationData.Data.Repositories.RepoCommon;
 
 namespace OrganizationData.Data.Repositories
 {

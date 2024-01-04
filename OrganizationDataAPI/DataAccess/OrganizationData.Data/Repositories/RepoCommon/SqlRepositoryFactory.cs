@@ -1,7 +1,8 @@
 ﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
 using OrganizationData.Data.Abstractions.Repository;
+using OrganizationData.Data.Abstractions.Repository.RepoCommon;
 
-namespace OrganizationData.Data.Repositories
+namespace OrganizationData.Data.Repositories.RepoCommon
 {
     internal class SqlRepositoryFactory : IRepositoryFactory
     {
@@ -25,6 +26,11 @@ namespace OrganizationData.Data.Repositories
         public IIndustryRepository CreateIndustryRepository()
         {
             return new IndustryRepository(_connectionWrapper);
+        }
+
+        public IStatsRepository CreateStatsRepository()
+        {
+            return new StatsRepository(_connectionWrapper);
         }
     }
 }

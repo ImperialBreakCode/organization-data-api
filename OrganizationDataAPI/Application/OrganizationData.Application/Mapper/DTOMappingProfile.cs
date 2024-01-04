@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using OrganizationData.Application.Abstractions.FileData;
 using OrganizationData.Application.DTO.Organization;
+using OrganizationData.Application.DTO.Stats;
 using OrganizationData.Data.Entities;
+using OrganizationData.Data.Entities.QueryStatsResults;
 
 namespace OrganizationData.Application.Mapper
 {
@@ -18,6 +20,9 @@ namespace OrganizationData.Application.Mapper
                     => src.Industry.Split('/', StringSplitOptions.None).Select(i => i.Trim())));
 
             CreateMap<OrganizationCsvData, UpdateOrganizationRequestDTO>();
+
+            CreateMap<OrganizationCountByCountry, OrganizationCountByCountryDTO>();
+            CreateMap<OrganizationCountByIndustry, OrganizationCountByIndustryDTO>();
         }
     }
 }

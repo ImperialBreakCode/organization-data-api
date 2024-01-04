@@ -35,6 +35,7 @@ namespace OrganizationData.Application
             services.AddTransient<IIndustryService, IndustryService>();
             services.AddTransient<IOrganizationDataHelper, OrganizationDataHelper>();
             services.AddTransient<IOrganizationService, OrganizationService>();
+            services.AddTransient<IStatsService, StatsService>();
 
             return services;
         }

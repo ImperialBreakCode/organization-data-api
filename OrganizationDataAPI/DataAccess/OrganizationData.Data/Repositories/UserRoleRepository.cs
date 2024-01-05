@@ -19,5 +19,14 @@ namespace OrganizationData.Data.Repositories
 
             return EntityConverterHelper.ToEntityCollection<UserRole>(command).FirstOrDefault();
         }
+
+        public override void SoftDelete(UserRole entity)
+        {
+            var command = CreateCommand($"Update [{nameof(User)}] SET [{nameof(User.UserRoleId)}]=NULL WHERE [{nameof(User.UserRoleId)}]=@roleId");
+            command.Parameters.AddWithValue("@roleId", entity.Id);
+            command.ExecuteNonQuery();
+
+            base.SoftDelete(entity);
+        }
     }
 }

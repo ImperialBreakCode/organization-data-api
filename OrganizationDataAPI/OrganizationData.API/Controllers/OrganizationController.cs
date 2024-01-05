@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using OrganizationData.API.Constants;
 using OrganizationData.API.Extensions;
 using OrganizationData.Application.Abstractions.Services.Organization;
 using OrganizationData.Application.DTO.Organization;
@@ -29,6 +31,7 @@ namespace OrganizationData.API.Controllers
             return Ok(result.Result);
         }
 
+        [Authorize(ApiScopes.WriteScope)]
         [HttpPost("CreateOrganization")]
         public IActionResult CreateOrganization(CreateOrganizationRequestDTO dto)
         {
@@ -43,6 +46,7 @@ namespace OrganizationData.API.Controllers
             return this.ParseAndReturnMessage(result);
         }
 
+        [Authorize(ApiScopes.WriteScope)]
         [HttpPut("UpdateByOrganizationId/{organizationId}")]
         public IActionResult UpdateByOrganizationId([FromRoute] string organizationId, [FromBody] UpdateOrganizationRequestDTO updateDTO)
         {
@@ -50,6 +54,7 @@ namespace OrganizationData.API.Controllers
             return this.ParseAndReturnMessage(result);
         }
 
+        [Authorize(ApiScopes.WriteScope)]
         [HttpPut("AddIndustry")]
         public IActionResult AddIndustry(AddIndustryRequestDTO addIndustryDTO)
         {
@@ -57,6 +62,7 @@ namespace OrganizationData.API.Controllers
             return this.ParseAndReturnMessage(result);
         }
 
+        [Authorize(ApiScopes.WriteScope)]
         [HttpPut("RemoveIndustry")]
         public IActionResult RemoveIndustry(RemoveIndustryRequestDTO removeIndustryDTO)
         {
@@ -64,6 +70,7 @@ namespace OrganizationData.API.Controllers
             return this.ParseAndReturnMessage(result);
         }
 
+        [Authorize(ApiScopes.FullScope)]
         [HttpDelete("DeleteByOrganizationId/{organizationId}")]
         public IActionResult DeleteByOrganizationId(string organizationId)
         {

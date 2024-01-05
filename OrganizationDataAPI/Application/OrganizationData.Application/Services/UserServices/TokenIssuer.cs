@@ -21,6 +21,7 @@ namespace OrganizationData.Application.Services.UserServices
                 .WithSecret(_organizationSettings.AuthSettings.SecretKey)
                 .AddClaim("user", username)
                 .AddClaim("role", role)
+                .AddClaim("admin", "true")
                 .AddClaim("exp", DateTimeOffset.UtcNow.AddSeconds(secondsValid).ToUnixTimeSeconds())
                 .AddClaim("iss", _organizationSettings.AuthSettings.Issuer)
                 .AddClaim("aud", _organizationSettings.AuthSettings.Audience)

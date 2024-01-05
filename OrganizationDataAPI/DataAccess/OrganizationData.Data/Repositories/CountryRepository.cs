@@ -23,7 +23,7 @@ namespace OrganizationData.Data.Repositories
 
         public override void SoftDelete(Country entity)
         {
-            var command = CreateCommand($"Update [{nameof(Organization)}] SET [{nameof(Organization.CountryId)}]=NULL WHERE CountryId=@countryId");
+            var command = CreateCommand($"Update [{nameof(Organization)}] SET [{nameof(Organization.CountryId)}]=NULL WHERE [{nameof(Organization.CountryId)}]=@countryId");
             command.Parameters.AddWithValue("@countryId", entity.Id);
             command.ExecuteNonQuery();
 

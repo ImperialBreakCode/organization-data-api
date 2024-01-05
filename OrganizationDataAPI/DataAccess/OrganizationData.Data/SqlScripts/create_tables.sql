@@ -33,3 +33,22 @@ CREATE TABLE [IndustryOrganization](
     IndustryId varchar(36) NOT NULL FOREIGN KEY REFERENCES [Industry](Id) ON DELETE CASCADE,
     PRIMARY KEY (OrganizationId, IndustryId)
 );
+
+CREATE TABLE [User](
+    Id varchar(36) NOT NULL PRIMARY KEY,
+    CreatedAt datetime NOT NULL,
+    DeletedAt datetime NULL,
+    Username varchar(64) NOT NULL,
+    PassHash text NOT NULL,
+    Salt text NOT NULL,
+    UserRoleId varchar(36) NULL FOREIGN KEY REFERENCES [UserRole](Id) ON DELETE SET NULL,
+    UNIQUE(Username, DeletedAt)
+);
+
+CREATE TABLE [UserRole](
+    Id varchar(36) NOT NULL PRIMARY KEY,
+    CreatedAt datetime NOT NULL,
+    DeletedAt datetime NULL,
+    RoleName varchar(16) NOT NULL,
+    UNIQUE(RoleName, DeletedAt)
+);

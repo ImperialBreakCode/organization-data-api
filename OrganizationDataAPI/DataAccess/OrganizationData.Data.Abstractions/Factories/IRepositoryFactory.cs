@@ -8,5 +8,7 @@ namespace OrganizationData.Data.Abstractions.Factories
         IOrganizationRepository CreateOrganizationRepository();
         IIndustryRepository CreateIndustryRepository();
         IStatsRepository CreateStatsRepository();
+        IUserRoleRepository CreateUserRoleRepository();
+        IUserRepository CreateUserRepository();
     }
 }

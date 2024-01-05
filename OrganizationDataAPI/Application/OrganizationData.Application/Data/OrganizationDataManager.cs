@@ -10,15 +10,18 @@ namespace OrganizationData.Application.Data
         private readonly IOrganizationDbManager _organizationDbManager;
         private readonly IOrganizationDbContext _organizationDbContext;
         private readonly IOrganizationSettings _organizationSettings;
+        private readonly IAccountInitializer _accountInitializer;
 
         public OrganizationDataManager(
             IOrganizationDbManager organizationDbManager,
             IOrganizationDbContext organizationDbContext,
-            IOrganizationSettings organizationSettings)
+            IOrganizationSettings organizationSettings,
+            IAccountInitializer accountInitializer)
         {
             _organizationDbManager = organizationDbManager;
             _organizationSettings = organizationSettings;
             _organizationDbContext = organizationDbContext;
+            _accountInitializer = accountInitializer;
 
             _organizationDbContext.Setup(_organizationSettings.ConnectionString);
         }
@@ -34,6 +37,11 @@ namespace OrganizationData.Application.Data
         public void Dispose()
         {
             _organizationDbContext?.Dispose();
+        }
+
+        public void EnsureAdminAccountAndRoles()
+        {
+            _accountInitializer.EnsureAdminAccountAndRoles(_organizationDbContext);
         }
     }
 }

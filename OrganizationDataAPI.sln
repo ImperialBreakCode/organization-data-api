@@ -21,11 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{55E0843E-BC16-4781-9C71-19B3E150D87D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizationData.Data", "OrganizationDataAPI\DataAccess\OrganizationData.Data\OrganizationData.Data.csproj", "{D7790E7B-6DA1-4738-80A5-5D1E6B634C87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrganizationData.Data", "OrganizationDataAPI\DataAccess\OrganizationData.Data\OrganizationData.Data.csproj", "{D7790E7B-6DA1-4738-80A5-5D1E6B634C87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizationData.Data.Abstractions", "OrganizationDataAPI\DataAccess\OrganizationData.Data.Abstractions\OrganizationData.Data.Abstractions.csproj", "{04417750-0910-4CCB-AD0F-9644283B7C3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrganizationData.Data.Abstractions", "OrganizationDataAPI\DataAccess\OrganizationData.Data.Abstractions\OrganizationData.Data.Abstractions.csproj", "{04417750-0910-4CCB-AD0F-9644283B7C3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizationData.Data.Entities", "OrganizationDataAPI\DataAccess\OrganizationData.Data.Entities\OrganizationData.Data.Entities.csproj", "{0D20A167-F96E-4836-9F5D-71D1ACA42753}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrganizationData.Data.Entities", "OrganizationDataAPI\DataAccess\OrganizationData.Data.Entities\OrganizationData.Data.Entities.csproj", "{0D20A167-F96E-4836-9F5D-71D1ACA42753}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

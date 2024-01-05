@@ -1,5 +1,6 @@
 ﻿using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Entities;
+using OrganizationData.Data.Entities.Auth;
 
 namespace OrganizationData.Data.Factories
 {
@@ -27,6 +28,22 @@ namespace OrganizationData.Data.Factories
             {
                 IndustryId = industryId,
                 OrganizationId = organizationId
+            };
+        }
+
+        public User CreateUserEntity(string username)
+        {
+            return new User()
+            {
+                Username = username
+            };
+        }
+
+        public UserRole CreateUserRoleEntity(string name)
+        {
+            return new UserRole()
+            {
+                RoleName = name
             };
         }
     }

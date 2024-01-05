@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using OrganizationData.Application.Abstractions.Settings;
-using OrganizationData.Application.Options;
+using OrganizationData.Application.Abstractions.Settings.Options;
+using OrganizationData.Application.Abstractions.Settings.Options.OrganizationApi;
 
 namespace OrganizationData.API.Implementations
 {
@@ -23,5 +24,8 @@ namespace OrganizationData.API.Implementations
 
         public string ProcessedFilesDir 
             => _organizationApiOptions.CurrentValue.ProcessedFilesDir;
+
+        public AuthSettings AuthSettings 
+            => _organizationApiOptions.CurrentValue.AuthSettings;
     }
 }

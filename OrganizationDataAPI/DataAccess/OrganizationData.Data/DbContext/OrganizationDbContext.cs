@@ -3,6 +3,7 @@ using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Abstractions.Repository;
 using OrganizationData.Data.DbConnectionWrapper;
+using OrganizationData.Data.Entities.Auth;
 using OrganizationData.Data.Factories;
 
 namespace OrganizationData.Data.DbContext
@@ -17,6 +18,8 @@ namespace OrganizationData.Data.DbContext
         private ICountryRepository _countryRepository;
         private IIndustryRepository _industryRepository;
         private IStatsRepository _statsRepository;
+        private IUserRepository _userRepository;
+        private IUserRoleRepository _userRoleRepository;
 
         private bool _isSet;
 
@@ -37,6 +40,12 @@ namespace OrganizationData.Data.DbContext
 
         public IStatsRepository Stats 
             => _statsRepository ??= _repositoryFactory.CreateStatsRepository();
+
+        public IUserRoleRepository UserRole 
+            => _userRoleRepository ??= _repositoryFactory.CreateUserRoleRepository();
+
+        public IUserRepository User 
+            => _userRepository ??= _repositoryFactory.CreateUserRepository();
 
         public void Setup(string connectionString)
         {

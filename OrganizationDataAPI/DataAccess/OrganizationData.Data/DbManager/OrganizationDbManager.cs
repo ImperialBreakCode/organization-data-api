@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using OrganizationData.Data.Abstractions.DbManager;
 using OrganizationData.Data.Entities;
+using OrganizationData.Data.Entities.Auth;
 
 namespace OrganizationData.Data.DbManager
 {
@@ -30,6 +31,8 @@ namespace OrganizationData.Data.DbManager
             CreateTableIfItDoesntExist<Organization>();
             CreateTableIfItDoesntExist<Industry>();
             CreateTableIfItDoesntExist<IndustryOrganization>();
+            CreateTableIfItDoesntExist<UserRole>();
+            CreateTableIfItDoesntExist<User>();
 
             _connection.Close();
         }

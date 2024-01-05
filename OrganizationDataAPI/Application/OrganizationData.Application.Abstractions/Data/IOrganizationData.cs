@@ -6,5 +6,6 @@ namespace OrganizationData.Application.Abstractions.Data
     {
         IOrganizationDbContext DbContext { get; }
         void EnsureDatabase();
+        void EnsureAdminAccountAndRoles();
     }
 }

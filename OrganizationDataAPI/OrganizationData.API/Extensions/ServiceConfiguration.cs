@@ -2,7 +2,7 @@
 using OrganizationData.API.Implementations;
 using OrganizationData.Application;
 using OrganizationData.Application.Abstractions.Settings;
-using OrganizationData.Application.Options;
+using OrganizationData.Application.Abstractions.Settings.Options;
 
 namespace OrganizationData.API.Extensions
 {

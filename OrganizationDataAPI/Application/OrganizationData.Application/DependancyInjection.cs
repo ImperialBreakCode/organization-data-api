@@ -5,6 +5,7 @@ using OrganizationData.Application.Abstractions.Services;
 using OrganizationData.Application.Abstractions.Services.Factories;
 using OrganizationData.Application.Abstractions.Services.Filter;
 using OrganizationData.Application.Abstractions.Services.Organization;
+using OrganizationData.Application.Abstractions.Services.User;
 using OrganizationData.Application.Data;
 using OrganizationData.Application.FileData;
 using OrganizationData.Application.Mapper;
@@ -12,6 +13,7 @@ using OrganizationData.Application.QuartzConfig;
 using OrganizationData.Application.Services;
 using OrganizationData.Application.Services.Factories;
 using OrganizationData.Application.Services.OrganizationServices;
+using OrganizationData.Application.Services.UserServices;
 using OrganizationData.Data;
 using Quartz;
 
@@ -31,6 +33,7 @@ namespace OrganizationData.Application
             services.AddOrganizationDataLayer();
 
             services.AddTransient<IOrganizationData, OrganizationDataManager>();
+            services.AddTransient<IAccountInitializer, AccountInitializer>();
 
             services.AddTransient<IDataFilter, DataFilter>();
             services.AddTransient<IServiceGetResultFactory, ServiceGetResultFactory>();
@@ -40,6 +43,11 @@ namespace OrganizationData.Application
             services.AddTransient<IOrganizationDataHelper, OrganizationDataHelper>();
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<IStatsService, StatsService>();
+
+            services.AddTransient<IPasswordManager, PasswordManager>();
+            services.AddTransient<ITokenIssuer, TokenIssuer>();
+            services.AddTransient<IUserDTOFactory, UserDTOFactory>();
+            services.AddTransient<IUserService, UserService>();
 
             return services;
         }

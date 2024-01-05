@@ -1,7 +1,10 @@
 ﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
 using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Abstractions.Repository;
+using OrganizationData.Data.Abstractions.Repository.RepoCommon;
+using OrganizationData.Data.Entities.Base;
 using OrganizationData.Data.Repositories;
+using OrganizationData.Data.Repositories.RepoCommon;
 
 namespace OrganizationData.Data.Factories
 {
@@ -32,6 +35,16 @@ namespace OrganizationData.Data.Factories
         public IStatsRepository CreateStatsRepository()
         {
             return new StatsRepository(_connectionWrapper);
+        }
+
+        public IUserRepository CreateUserRepository()
+        {
+            return new UserRepository(_connectionWrapper);
+        }
+
+        public IUserRoleRepository CreateUserRoleRepository()
+        {
+            return new UserRoleRepository(_connectionWrapper);
         }
     }
 }

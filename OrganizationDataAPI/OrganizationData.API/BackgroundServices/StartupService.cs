@@ -14,6 +14,7 @@ namespace OrganizationData.API.BackgroundServices
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _organizationData.EnsureDatabase();
+            _organizationData.EnsureAdminAccountAndRoles();
             _organizationData.Dispose();
 
             return Task.CompletedTask;

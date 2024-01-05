@@ -37,11 +37,11 @@ namespace OrganizationData.API.Extensions
             services.AddAuthorizationBuilder()
                 .AddPolicy(ApiScopes.WriteScope, policy =>
                 {
-                    policy.RequireClaim("admin", "true");
+                    policy.RequireClaim(RoleNames.User, "true");
                 })
                 .AddPolicy(ApiScopes.FullScope, policy =>
                 {
-                    policy.RequireClaim("role", RoleNames.Admin);
+                    policy.RequireClaim(RoleNames.Admin, "true");
                 });
 
             return services;

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using OrganizationData.API.Constants;
 using OrganizationData.API.Extensions;
 using OrganizationData.Application.Abstractions.Services;
 using OrganizationData.Application.DTO.Country;
@@ -43,6 +45,7 @@ namespace OrganizationData.API.Controllers
             return Ok(result.Result);
         }
 
+        [Authorize(Policy = ApiScopes.WriteScope)]
         [HttpPost("CreateCountry")]
         public IActionResult CreateCountry(CreateCountryRequestDTO dto)
         {
@@ -58,6 +61,7 @@ namespace OrganizationData.API.Controllers
             return this.ParseAndReturnMessage(result);
         }
 
+        [Authorize(Policy = ApiScopes.WriteScope)]
         [HttpPut("UpdateCountryName/{id}")]
         public IActionResult UpdateCountryName([FromRoute] string id, [FromBody] UpdateCountryNameRequestDTO dto)
         {
@@ -66,6 +70,7 @@ namespace OrganizationData.API.Controllers
             return this.ParseAndReturnMessage(result);
         }
 
+        [Authorize(Policy = ApiScopes.FullScope)]
         [HttpDelete("DeleteCountryById/{id}")]
         public IActionResult DeleteCountryById(string id)
         {

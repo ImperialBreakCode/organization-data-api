@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using OrganizationData.API.Constants;
 using OrganizationData.API.Extensions;
 using OrganizationData.Application.Abstractions.Services.User;
 using OrganizationData.Application.DTO.User;
@@ -35,6 +37,7 @@ namespace OrganizationData.API.Controllers
             return this.ParseAndReturnMessage(result);
         }
 
+        [Authorize(Policy = ApiScopes.FullScope)]
         [HttpDelete("Delete/{username}")]
         public IActionResult Delete(string username)
         {

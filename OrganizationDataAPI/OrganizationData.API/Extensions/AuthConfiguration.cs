@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using OrganizationData.API.Constants;
 using OrganizationData.Application.Abstractions.Settings;
 using OrganizationData.Application.Services.UserServices;
+using System.Security.Claims;
 using System.Text;
 
 namespace OrganizationData.API.Extensions
@@ -37,11 +38,11 @@ namespace OrganizationData.API.Extensions
             services.AddAuthorizationBuilder()
                 .AddPolicy(ApiScopes.WriteScope, policy =>
                 {
-                    policy.RequireClaim(RoleNames.User, "true");
+                    policy.RequireClaim(ClaimTypes.Role, RoleNames.User, RoleNames.Admin);
                 })
                 .AddPolicy(ApiScopes.FullScope, policy =>
                 {
-                    policy.RequireClaim(RoleNames.Admin, "true");
+                    policy.RequireClaim(ClaimTypes.Role, RoleNames.Admin);
                 });
 
             return services;

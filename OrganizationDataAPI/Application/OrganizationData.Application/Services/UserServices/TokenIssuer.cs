@@ -2,6 +2,7 @@
 using JWT.Builder;
 using OrganizationData.Application.Abstractions.Services.User;
 using OrganizationData.Application.Abstractions.Settings;
+using System.Security.Claims;
 
 namespace OrganizationData.Application.Services.UserServices
 {
@@ -20,8 +21,7 @@ namespace OrganizationData.Application.Services.UserServices
                 .WithAlgorithm(new HMACSHA256Algorithm())
                 .WithSecret(_organizationSettings.AuthSettings.SecretKey)
                 .AddClaim("username", username)
-                .AddClaim("user", RoleNames.User == role)
-                .AddClaim("admin", RoleNames.Admin == role)
+                .AddClaim(ClaimTypes.Role, role)
                 .AddClaim("exp", DateTimeOffset.UtcNow.AddSeconds(secondsValid).ToUnixTimeSeconds())
                 .AddClaim("iss", _organizationSettings.AuthSettings.Issuer)
                 .AddClaim("aud", _organizationSettings.AuthSettings.Audience)

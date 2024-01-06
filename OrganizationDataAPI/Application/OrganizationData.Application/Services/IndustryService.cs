@@ -1,9 +1,12 @@
-﻿using OrganizationData.Application.Abstractions.Data;
+﻿using AutoMapper;
+using OrganizationData.Application.Abstractions.Data;
 using OrganizationData.Application.Abstractions.Services;
+using OrganizationData.Application.Abstractions.Services.Factories;
 using OrganizationData.Application.Abstractions.Services.Filter;
 using OrganizationData.Application.DTO.Industry;
 using OrganizationData.Application.ResponseMessage;
 using OrganizationData.Data.Abstractions.DbContext;
+using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Entities;
 
 namespace OrganizationData.Application.Services
@@ -12,11 +15,22 @@ namespace OrganizationData.Application.Services
     {
         private readonly IOrganizationDbContext _organizationDbContext;
         private readonly IDataFilter _dataFilter;
+        private readonly IEntityFactory _entityFactory;
+        private readonly IServiceGetResultFactory _serviceGetResultFactory;
+        private readonly IMapper _mapper;
 
-        public IndustryService(IOrganizationData organizationData, IDataFilter dataFilter)
+        public IndustryService(
+            IOrganizationData organizationData,
+            IDataFilter dataFilter,
+            IEntityFactory entityFactory,
+            IServiceGetResultFactory serviceGetResultFactory,
+            IMapper mapper)
         {
             _organizationDbContext = organizationData.DbContext;
             _dataFilter = dataFilter;
+            _entityFactory = entityFactory;
+            _serviceGetResultFactory = serviceGetResultFactory;
+            _mapper = mapper;
         }
 
         public string CreateIndustry(CreateIndustryRequestDTO createIndustryDTO)
@@ -29,10 +43,7 @@ namespace OrganizationData.Application.Services
                 return ServiceMessages.IndustryNameConflict;
             }
 
-            Industry newIndustry = new()
-            {
-                IndustryName = createIndustryDTO.IndustryName
-            };
+            Industry newIndustry = _entityFactory.CreateIndustryEntity(createIndustryDTO.IndustryName);
 
             _organizationDbContext.Industry.Insert(newIndustry);
             _organizationDbContext.SaveChanges();
@@ -99,16 +110,10 @@ namespace OrganizationData.Application.Services
         {
             if (result.Success)
             {
-                return new ServiceGetResult<GetIndustryResponseDTO>()
-                {
-                    Result = new GetIndustryResponseDTO(industry!.Id, industry.IndustryName, industry.CreatedAt)
-                };
+                return _serviceGetResultFactory.CreateGetServiceResult(_mapper.Map<GetIndustryResponseDTO>(industry), null);
             }
 
-            return new ServiceGetResult<GetIndustryResponseDTO>()
-            {
-                ErrorMessage = result.ErrorMessage
-            };
+            return _serviceGetResultFactory.CreateGetServiceResult<GetIndustryResponseDTO>(null, result.ErrorMessage);
         }
     }
 }

@@ -1,24 +1,20 @@
-﻿using Microsoft.Data.SqlClient;
-using OrganizationData.Data.Abstractions.DbConnectionWrapper;
-using OrganizationData.Data.Abstractions.Repository;
+﻿using OrganizationData.Data.Abstractions.DbConnectionWrapper;
+using OrganizationData.Data.Abstractions.Repository.RepoCommon;
 using OrganizationData.Data.Entities.Base;
 using OrganizationData.Data.Helpers;
 
-namespace OrganizationData.Data.Repositories
+namespace OrganizationData.Data.Repositories.RepoCommon
 {
-    internal class Repository<T> : IRepository<T> where T : class, IEntity
+    internal class Repository<T> : BaseRepository, IRepository<T> where T : class, IEntity
     {
-        private readonly ISqlConnectionWrapper _sqlConnectionWrapper;
-
         private readonly string _insertQuery;
         private readonly string _updateQuery;
         private readonly string _getByIdQuery;
         private readonly string _getAllQuery;
 
         public Repository(ISqlConnectionWrapper sqlConnectionWrapper)
+            : base(sqlConnectionWrapper)
         {
-            _sqlConnectionWrapper = sqlConnectionWrapper;
-
             _insertQuery = SqlQueryGeneratorHelper.GenerateInsertQuery<T>();
             _updateQuery = SqlQueryGeneratorHelper.GenerateUpdateQuery<T>();
             _getByIdQuery = $"SELECT * FROM [{typeof(T).Name}] WHERE Id=@id";
@@ -60,15 +56,6 @@ namespace OrganizationData.Data.Repositories
             EntityConverterHelper.ToQuery(entity, command);
 
             command.ExecuteNonQuery();
-        }
-
-        protected SqlCommand CreateCommand(string query)
-        {
-            SqlCommand sqlCommand = _sqlConnectionWrapper.SqlConnection.CreateCommand();
-            sqlCommand.CommandText = query;
-            sqlCommand.Transaction = _sqlConnectionWrapper.SqlTransaction;
-
-            return sqlCommand;
         }
     }
 }

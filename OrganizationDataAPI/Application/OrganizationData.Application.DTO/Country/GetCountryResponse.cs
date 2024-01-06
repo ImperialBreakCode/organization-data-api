@@ -1,4 +1,9 @@
 ﻿namespace OrganizationData.Application.DTO.Country
 {
-    public record GetCountryResponse(string Id, string CountryName, DateTime CreatedAt);
+    public class GetCountryResponse
+    {
+        public string Id { get; set; }
+        public string CountryName { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
 }

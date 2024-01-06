@@ -4,6 +4,13 @@
     {
         public const string DataNotFound = "The required data is not found.";
 
+        // User
+        public const string UserCreated = "Account created.";
+        public const string UserDeleted = "Account deleted successfully.";
+        public const string UsernameConflict = "Account with the same username already exists.";
+        public const string LoginSuccessfull = "Login successfull.";
+        public const string LoginIncorrectCredentials = "Incorrect credentials.";
+
         // Country
         public const string CountryUpdated = "The country is updated successfully.";
         public const string CountryDeleted = "The country is deleted successfully.";

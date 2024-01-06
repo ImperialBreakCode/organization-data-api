@@ -17,6 +17,8 @@ namespace OrganizationData.API.Extensions
                     return controller.Conflict(message);
                 case ResponseType.Created:
                     return controller.StatusCode(201, message);
+                case ResponseType.Unauthorized:
+                    return controller.Unauthorized(message);
                 default:
                     return controller.Ok(message);
             }

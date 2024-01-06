@@ -1,11 +1,13 @@
 ﻿namespace OrganizationData.Application.DTO.Organization
 {
-    public record UpdateOrganizationRequestDTO(
-        string OrganizationId,
-        string Name,
-        string Website,
-        string Description,
-        string Country,
-        int Founded,
-        int NumberOfEmployees);
+    public class UpdateOrganizationRequestDTO
+    {
+        public string OrganizationId { get; set; }
+        public string Name { get; set; }
+        public string Website { get; set; }
+        public string Description { get; set; }
+        public string Country { get; set; }
+        public int Founded { get; set; }
+        public int NumberOfEmployees { get; set; }
+    }
 }

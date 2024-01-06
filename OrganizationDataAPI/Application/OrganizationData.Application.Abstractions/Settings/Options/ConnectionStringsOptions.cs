@@ -1,4 +1,4 @@
-﻿namespace OrganizationData.Application.Options
+﻿namespace OrganizationData.Application.Abstractions.Settings.Options
 {
     public class ConnectionStringsOptions
     {

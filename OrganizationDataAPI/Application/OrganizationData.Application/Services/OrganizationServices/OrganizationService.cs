@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using OrganizationData.Application.Abstractions.Data;
 using OrganizationData.Application.Abstractions.Services;
+using OrganizationData.Application.Abstractions.Services.Factories;
 using OrganizationData.Application.Abstractions.Services.Filter;
 using OrganizationData.Application.Abstractions.Services.Organization;
 using OrganizationData.Application.DTO.Organization;
 using OrganizationData.Application.ResponseMessage;
 using OrganizationData.Data.Abstractions.DbContext;
+using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Entities;
 
 namespace OrganizationData.Application.Services.OrganizationServices
@@ -16,15 +18,25 @@ namespace OrganizationData.Application.Services.OrganizationServices
         private readonly IOrganizationDataHelper _organizationDataHelper;
         private readonly IDataFilter _dataFilter;
         private readonly IMapper _mapper;
+        private readonly IEntityFactory _entityFactory;
+        private readonly IServiceGetResultFactory _serviceGetResultFactory;
 
-        public OrganizationService(IOrganizationData organizationData, IOrganizationDataHelper organizationDataHelper, IDataFilter dataFilter, IMapper mapper)
+        public OrganizationService(
+            IOrganizationData organizationData, 
+            IOrganizationDataHelper organizationDataHelper, 
+            IDataFilter dataFilter, 
+            IMapper mapper, 
+            IEntityFactory entityFactory, 
+            IServiceGetResultFactory serviceGetResultFactory)
         {
             _dataFilter = dataFilter;
             _context = organizationData.DbContext;
             _organizationDataHelper = organizationDataHelper;
             _mapper = mapper;
+            _entityFactory = entityFactory;
 
             _organizationDataHelper.SetOrganizationDbContext(_context);
+            _serviceGetResultFactory = serviceGetResultFactory;
         }
 
         public string AddIndustry(AddIndustryRequestDTO addIndustryDTO)
@@ -33,7 +45,6 @@ namespace OrganizationData.Application.Services.OrganizationServices
             var filterResult = _dataFilter.CheckSingle(organization);
             if (!filterResult.Success)
             {
-                _context.DiscardChanges();
                 return filterResult.ErrorMessage!;
             }
 
@@ -82,10 +93,7 @@ namespace OrganizationData.Application.Services.OrganizationServices
             var country = _context.Country.GetNonDeletedCountryByName(createDTO.Country);
             if (country is null)
             {
-                country = new Country()
-                {
-                    CountryName = createDTO.Country
-                };
+                country = _entityFactory.CreateCountryEntity(createDTO.Country);
 
                 _context.Country.Insert(country);
             }
@@ -123,10 +131,7 @@ namespace OrganizationData.Application.Services.OrganizationServices
             Country? country = _context.Country.GetNonDeletedCountryByName(updateDTO.Country);
             if (country is null)
             {
-                country = new()
-                {
-                    CountryName = updateDTO.Country
-                };
+                country = _entityFactory.CreateCountryEntity(updateDTO.Country);
 
                 _context.Country.Insert(country);
             }
@@ -160,10 +165,7 @@ namespace OrganizationData.Application.Services.OrganizationServices
             var filterResult = _dataFilter.CheckSingle(organization);
             if (!filterResult.Success)
             {
-                return new ServiceGetResult<GetOrganizationResponseDTO>()
-                {
-                    ErrorMessage = filterResult.ErrorMessage
-                };
+                return _serviceGetResultFactory.CreateGetServiceResult<GetOrganizationResponseDTO>(null, filterResult.ErrorMessage);
             }
 
             var result = _mapper.Map<GetOrganizationResponseDTO>(organization);
@@ -178,10 +180,7 @@ namespace OrganizationData.Application.Services.OrganizationServices
                 .Select(industry => industry.IndustryName)
                 .ToList();
 
-            return new ServiceGetResult<GetOrganizationResponseDTO>()
-            {
-                Result = result
-            };
+            return _serviceGetResultFactory.CreateGetServiceResult(result, null);
         }
     }
 }

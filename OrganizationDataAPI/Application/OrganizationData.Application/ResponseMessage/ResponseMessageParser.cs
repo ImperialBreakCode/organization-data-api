@@ -13,12 +13,17 @@
                 case ServiceMessages.IndustryNameConflict:
                 case ServiceMessages.OrganizationIndusryAlreadyExists:
                 case ServiceMessages.OrganizationIdConflict:
+                case ServiceMessages.UsernameConflict:
                     return ResponseType.Conflict;
 
                 case ServiceMessages.CountryCreated:
                 case ServiceMessages.IndustryCreated:
                 case ServiceMessages.OrganizationCreated:
+                case ServiceMessages.UserCreated:
                     return ResponseType.Created;
+
+                case ServiceMessages.LoginIncorrectCredentials:
+                    return ResponseType.Unauthorized;
 
                 default:
                     return ResponseType.Success;

@@ -1,9 +1,12 @@
-﻿using OrganizationData.Application.Abstractions.Data;
+﻿using AutoMapper;
+using OrganizationData.Application.Abstractions.Data;
 using OrganizationData.Application.Abstractions.Services;
+using OrganizationData.Application.Abstractions.Services.Factories;
 using OrganizationData.Application.Abstractions.Services.Filter;
 using OrganizationData.Application.DTO.Country;
 using OrganizationData.Application.ResponseMessage;
 using OrganizationData.Data.Abstractions.DbContext;
+using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Entities;
 
 namespace OrganizationData.Application.Services
@@ -12,11 +15,22 @@ namespace OrganizationData.Application.Services
     {
         private readonly IOrganizationDbContext _organizationDbContext;
         private readonly IDataFilter _dataFilter;
+        private readonly IEntityFactory _entityFactory;
+        private readonly IServiceGetResultFactory _serviceGetResultFactory;
+        private readonly IMapper _mapper;
 
-        public CountryService(IOrganizationData organizationData, IDataFilter dataFilter)
+        public CountryService(
+            IOrganizationData organizationData, 
+            IDataFilter dataFilter, 
+            IEntityFactory entityFactory, 
+            IMapper mapper, 
+            IServiceGetResultFactory serviceGetResultFactory)
         {
             _organizationDbContext = organizationData.DbContext;
             _dataFilter = dataFilter;
+            _entityFactory = entityFactory;
+            _mapper = mapper;
+            _serviceGetResultFactory = serviceGetResultFactory;
         }
 
         public string AddCountry(CreateCountryRequestDTO createCountryDTO)
@@ -28,10 +42,7 @@ namespace OrganizationData.Application.Services
                 return ServiceMessages.CountryNameConflict;
             }
 
-            Country newCountry = new Country()
-            {
-                CountryName = createCountryDTO.CountryName
-            };
+            Country newCountry = _entityFactory.CreateCountryEntity(createCountryDTO.CountryName);
 
             _organizationDbContext.Country.Insert(newCountry);
             _organizationDbContext.SaveChanges();
@@ -98,16 +109,10 @@ namespace OrganizationData.Application.Services
         {
             if (result.Success)
             {
-                return new ServiceGetResult<GetCountryResponse>()
-                {
-                    Result = new GetCountryResponse(country!.Id, country.CountryName, country.CreatedAt)
-                };
+                return _serviceGetResultFactory.CreateGetServiceResult(_mapper.Map<GetCountryResponse>(country), null);
             }
 
-            return new ServiceGetResult<GetCountryResponse>()
-            {
-                ErrorMessage = result.ErrorMessage
-            };
+            return _serviceGetResultFactory.CreateGetServiceResult<GetCountryResponse>(null, result.ErrorMessage);
         }
     }
 }

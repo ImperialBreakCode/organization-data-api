@@ -2,8 +2,8 @@
 
 namespace OrganizationData.Application.Abstractions.Data
 {
-    public interface IOrganizationDataSeeder
+    public interface IAccountInitializer
     {
-        void SeedData(IOrganizationDbContext context);
+        void EnsureAdminAccountAndRoles(IOrganizationDbContext organizationDbContext);
     }
 }

@@ -5,6 +5,7 @@
         Success,
         Created,
         NotFound,
-        Conflict
+        Conflict,
+        Unauthorized
     }
 }

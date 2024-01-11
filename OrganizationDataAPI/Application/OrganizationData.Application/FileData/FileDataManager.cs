@@ -1,4 +1,5 @@
 ﻿using OrganizationData.Application.Abstractions.FileData;
+using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Application.Abstractions.Settings;
 
 namespace OrganizationData.Application.FileData
@@ -9,13 +10,15 @@ namespace OrganizationData.Application.FileData
         private readonly IFileReader _reader;
         private readonly IFileModifier _modifier;
         private readonly IFileDataInserter _inserter;
+        private readonly IDataNormalizer _dataNormalizer;
 
-        public FileDataManager(IOrganizationSettings organizationSettings, IFileReader reader, IFileModifier modifier, IFileDataInserter inserter)
+        public FileDataManager(IOrganizationSettings organizationSettings, IFileReader reader, IFileModifier modifier, IFileDataInserter inserter, IDataNormalizer dataNormalizer)
         {
             _organizationSettings = organizationSettings;
             _reader = reader;
             _modifier = modifier;
             _inserter = inserter;
+            _dataNormalizer = dataNormalizer;
         }
 
         public void SaveDataFromFiles()
@@ -26,10 +29,8 @@ namespace OrganizationData.Application.FileData
             {
                 var data = _reader.ReadFile(files[i]);
 
-                foreach (var d in data)
-                {
-                    _inserter.SaveData(d);
-                }
+                var collectionWrapper = _dataNormalizer.NormalizeData(data);
+                _inserter.SaveData(collectionWrapper);
 
                 _modifier.MarkFileAsRead(files[i]);
             }

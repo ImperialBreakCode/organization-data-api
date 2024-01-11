@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OrganizationData.Application.Abstractions.Data;
 using OrganizationData.Application.Abstractions.FileData;
+using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Application.Abstractions.Services;
 using OrganizationData.Application.Abstractions.Services.Factories;
 using OrganizationData.Application.Abstractions.Services.Filter;
@@ -8,6 +9,7 @@ using OrganizationData.Application.Abstractions.Services.Organization;
 using OrganizationData.Application.Abstractions.Services.User;
 using OrganizationData.Application.Data;
 using OrganizationData.Application.FileData;
+using OrganizationData.Application.FileData.DataInsertion;
 using OrganizationData.Application.Mapper;
 using OrganizationData.Application.QuartzConfig;
 using OrganizationData.Application.Services;
@@ -67,6 +69,7 @@ namespace OrganizationData.Application
             services.AddTransient<IFileDataManager, FileDataManager>();
             services.AddTransient<IFileModifier, FileModifier>();
             services.AddTransient<IFileDataInserter, FileDataInserter>();
+            services.AddTransient<IDataNormalizer, DataNormalizer>();
 
             return services;
         }

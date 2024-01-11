@@ -15,7 +15,7 @@ namespace OrganizationData.Application.Abstractions.FileData
         public int Founded { get; set; }
         public string Industry { get; set; }
 
-        [Name("Number of employee")]
+        [Name("Number of employees")]
         public int NumberOfEmployees { get; set; }
     }
 }

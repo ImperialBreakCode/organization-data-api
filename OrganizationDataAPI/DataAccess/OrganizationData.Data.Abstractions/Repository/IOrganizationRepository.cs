@@ -8,6 +8,6 @@ namespace OrganizationData.Data.Abstractions.Repository
     {
         Organization? GetByOrganizationId(string organizationId);
         ICollection<IndustryOrganization> GetChildrenFromJunction(string id);
-        bool CheckIfExistsByOrganizationId(string organizationId);
+        ICollection<string> GetAllOrganizationIds();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using OrganizationData.Application.Abstractions.FileData;
 using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Application.Abstractions.Settings;
+using System.Diagnostics;
 
 namespace OrganizationData.Application.FileData
 {
@@ -29,10 +30,15 @@ namespace OrganizationData.Application.FileData
             {
                 var data = _reader.ReadFile(files[i]);
 
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 var collectionWrapper = _dataNormalizer.NormalizeData(data);
+                stopwatch.Stop();
+                Console.WriteLine($"Data normalization: {stopwatch.ElapsedMilliseconds}");
+
                 _inserter.SaveData(collectionWrapper);
 
-                _modifier.MarkFileAsRead(files[i]);
+                //_modifier.MarkFileAsRead(files[i]);
             }
         }
     }

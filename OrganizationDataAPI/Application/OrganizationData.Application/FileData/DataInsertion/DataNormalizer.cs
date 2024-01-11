@@ -5,6 +5,7 @@ using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Entities;
+using System.Diagnostics;
 
 namespace OrganizationData.Application.FileData.DataInsertion
 {
@@ -13,6 +14,8 @@ namespace OrganizationData.Application.FileData.DataInsertion
         private readonly IOrganizationDbContext _organizationDbContext;
         private readonly IEntityFactory _entityFactory;
         private readonly IMapper _mapper;
+
+        private HashSet<string> _organizationIds;
 
         private Dictionary<string, string> _avaliableIndustries;
         private Dictionary<string, string> _avaliableCountries;
@@ -29,41 +32,9 @@ namespace OrganizationData.Application.FileData.DataInsertion
             LoadCurrentData();
 
             var bulkCollection = new BulkCollectionWrapper();
-
             foreach (var item in data)
             {
-                if (_organizationDbContext.Organization.CheckIfExistsByOrganizationId(item.OrganizationId))
-                {
-                    continue;
-                }
-
-                var organizationBulk = _mapper.Map<Organization>(item);
-
-                string countryId;
-                if (!_avaliableCountries.ContainsKey(item.Country))
-                {
-                    var country = _entityFactory.CreateCountryEntity(item.Country);
-                    bulkCollection.CountriesBulkInserts.Add(country);
-                    _avaliableCountries.Add(country.CountryName, country.Id);
-
-                    countryId = country.Id;
-                }
-                else
-                {
-                    countryId = _avaliableCountries[item.Country];
-                }
-
-                organizationBulk.CountryId = countryId;
-
-                var industries = SplitIndustries(item.Industry);
-                var industryIds = ProcessIndustries(industries, bulkCollection.IndustriesBulkInserts);
-
-                foreach (var industryId in industryIds)
-                {
-                    bulkCollection.IndOrgBulkInserts.Add(_entityFactory.CreateIndustryOrganizationJunction(organizationBulk.Id, industryId));
-                }
-
-                bulkCollection.OrganizationBulkInserts.Add(organizationBulk);
+                ProcessOrganization(item, bulkCollection);
             }
 
             _avaliableCountries.Clear();
@@ -81,6 +52,8 @@ namespace OrganizationData.Application.FileData.DataInsertion
             _avaliableIndustries = _organizationDbContext.Industry
                 .GetAll()
                 .ToDictionary(c => c.IndustryName, c => c.Id);
+
+            _organizationIds = _organizationDbContext.Organization.GetAllOrganizationIds().ToHashSet();
         }
 
         private ICollection<string> SplitIndustries(string rawIndustries)
@@ -90,6 +63,47 @@ namespace OrganizationData.Application.FileData.DataInsertion
             ICollection<string> normalizedIndustries = rawIndustries.Split(" / ").ToList();
 
             return normalizedIndustries;
+        }
+
+        private void ProcessOrganization(OrganizationCsvData item, BulkCollectionWrapper bulkCollection)
+        {
+            if (_organizationIds.Contains(item.OrganizationId))
+            {
+                return;
+            }
+
+            var organizationBulk = _mapper.Map<Organization>(item);
+
+            organizationBulk.CountryId = ProcessCountry(item.Country, bulkCollection.CountriesBulkInserts);
+
+            var industries = SplitIndustries(item.Industry);
+            var industryIds = ProcessIndustries(industries, bulkCollection.IndustriesBulkInserts);
+
+            foreach (var industryId in industryIds)
+            {
+                bulkCollection.IndOrgBulkInserts.Add(_entityFactory.CreateIndustryOrganizationJunction(organizationBulk.Id, industryId));
+            }
+
+            bulkCollection.OrganizationBulkInserts.Add(organizationBulk);
+        }
+
+        private string ProcessCountry(string countryName, ICollection<Country> bulkCountries)
+        {
+            string countryId;
+            if (!_avaliableCountries.ContainsKey(countryName))
+            {
+                var country = _entityFactory.CreateCountryEntity(countryName);
+                bulkCountries.Add(country);
+                _avaliableCountries.Add(country.CountryName, country.Id);
+
+                countryId = country.Id;
+            }
+            else
+            {
+                countryId = _avaliableCountries[countryName];
+            }
+
+            return countryId;
         }
 
         private ICollection<string> ProcessIndustries(ICollection<string> industryNames, ICollection<Industry> bulkIndustries)
@@ -110,6 +124,7 @@ namespace OrganizationData.Application.FileData.DataInsertion
                 {
                     industryIds.Add(_avaliableIndustries[industry]);
                 }
+
             }
 
             return industryIds;

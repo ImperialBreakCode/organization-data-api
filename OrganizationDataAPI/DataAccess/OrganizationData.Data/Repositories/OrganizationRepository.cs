@@ -46,20 +46,20 @@ namespace OrganizationData.Data.Repositories
             base.SoftDelete(entity);
         }
 
-        public bool CheckIfExistsByOrganizationId(string organizationId)
+        public ICollection<string> GetAllOrganizationIds()
         {
-            var command = CreateCommand($"IF EXISTS ({_selectByOrgIdQuery}) SELECT 1 AS OrgExists ELSE SELECT 0 AS OrgExists");
-            command.Parameters.AddWithValue("@organizationId", organizationId);
-            command.ExecuteNonQuery();
+            var command = CreateCommand($"SELECT OrganizationId FROM Organization WHERE DeletedAt IS NULL");
+            ICollection<string> ids = new List<string>();
 
-            bool exists = false;
             using (var reader = command.ExecuteReader())
             {
-                reader.Read();
-                exists = reader.GetInt32("OrgExists") == 1;
+                while (reader.Read())
+                {
+                    ids.Add(reader["OrganizationId"].ToString());
+                }
             }
 
-            return exists;
+            return ids;
         }
     }
 }

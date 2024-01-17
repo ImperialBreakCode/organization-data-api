@@ -2,9 +2,7 @@
 using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Application.Abstractions.Settings;
 using OrganizationData.Data.Entities.Attributes;
-using System.Collections.Concurrent;
 using System.Data;
-using System.Diagnostics;
 
 namespace OrganizationData.Application.FileData.DataInsertion
 {
@@ -35,32 +33,17 @@ namespace OrganizationData.Application.FileData.DataInsertion
             using (var connection = new SqlConnection(_organizationSettings.ConnectionString))
             {
                 connection.Open();
+                SqlTransaction sqlTransaction = connection.BeginTransaction();
 
-                using (SqlBulkCopy bulkCopy = new(connection))
+                using (SqlBulkCopy bulkCopy = new(connection, SqlBulkCopyOptions.TableLock, sqlTransaction))
                 {
                     bulkCopy.DestinationTableName = typeof(T).Name;
                     bulkCopy.BulkCopyTimeout = 0;
 
-                    MapColumns<T>(bulkCopy);
-
-                    Stopwatch stopwatch = Stopwatch.StartNew();
                     bulkCopy.WriteToServer(dataTable);
-                    stopwatch.Stop();
-                    Console.WriteLine($"Single bulk insert: {stopwatch.ElapsedMilliseconds}");
                 }
-            }
-        }
 
-        private void MapColumns<T>(SqlBulkCopy bulkCopy) where T : class
-        {
-            var properties = typeof(T)
-                .GetProperties()
-                .OrderBy(p => ((OrderAttribute)p.GetCustomAttributes(typeof(OrderAttribute), false).FirstOrDefault())?.Order ?? int.MaxValue)
-                .ToArray();
-
-            foreach (var property in properties)
-            {
-                bulkCopy.ColumnMappings.Add(property.Name, property.Name);
+                sqlTransaction.Commit();
             }
         }
 

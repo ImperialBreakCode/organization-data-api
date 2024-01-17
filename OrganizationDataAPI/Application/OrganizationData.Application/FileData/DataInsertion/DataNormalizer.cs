@@ -5,7 +5,6 @@ using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Data.Abstractions.DbContext;
 using OrganizationData.Data.Abstractions.Factories;
 using OrganizationData.Data.Entities;
-using System.Diagnostics;
 
 namespace OrganizationData.Application.FileData.DataInsertion
 {
@@ -14,17 +13,21 @@ namespace OrganizationData.Application.FileData.DataInsertion
         private readonly IOrganizationDbContext _organizationDbContext;
         private readonly IEntityFactory _entityFactory;
         private readonly IMapper _mapper;
-
-        private HashSet<string> _organizationIds;
+        private readonly IOrganizationIdsSet _organizationIdsSet;
 
         private Dictionary<string, string> _avaliableIndustries;
         private Dictionary<string, string> _avaliableCountries;
 
-        public DataNormalizer(IOrganizationData organizationData, IEntityFactory entityFactory, IMapper mapper)
+        public DataNormalizer
+            (IOrganizationData organizationData, 
+            IEntityFactory entityFactory, 
+            IMapper mapper, 
+            IOrganizationIdsSet organizationIdsSet)
         {
             _organizationDbContext = organizationData.DbContext;
             _entityFactory = entityFactory;
             _mapper = mapper;
+            _organizationIdsSet = organizationIdsSet;
         }
 
         public BulkCollectionWrapper NormalizeData(ICollection<OrganizationCsvData> data)
@@ -52,8 +55,6 @@ namespace OrganizationData.Application.FileData.DataInsertion
             _avaliableIndustries = _organizationDbContext.Industry
                 .GetAll()
                 .ToDictionary(c => c.IndustryName, c => c.Id);
-
-            _organizationIds = _organizationDbContext.Organization.GetAllOrganizationIds().ToHashSet();
         }
 
         private ICollection<string> SplitIndustries(string rawIndustries)
@@ -67,10 +68,12 @@ namespace OrganizationData.Application.FileData.DataInsertion
 
         private void ProcessOrganization(OrganizationCsvData item, BulkCollectionWrapper bulkCollection)
         {
-            if (_organizationIds.Contains(item.OrganizationId))
+            if (_organizationIdsSet.ContainsId(item.OrganizationId))
             {
                 return;
             }
+            
+            _organizationIdsSet.AddId(item.OrganizationId);
 
             var organizationBulk = _mapper.Map<Organization>(item);
 

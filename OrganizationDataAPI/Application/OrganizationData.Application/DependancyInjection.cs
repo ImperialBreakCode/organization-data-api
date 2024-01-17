@@ -71,6 +71,8 @@ namespace OrganizationData.Application
             services.AddTransient<IFileDataInserter, FileDataInserter>();
             services.AddTransient<IDataNormalizer, DataNormalizer>();
 
+            services.AddSingleton<IOrganizationIdsSet, OrganizationIdsSet>();
+
             return services;
         }
     }

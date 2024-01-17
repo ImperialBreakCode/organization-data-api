@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OrganizationData.Application.Abstractions.DailyStats;
 using OrganizationData.Application.Abstractions.Data;
 using OrganizationData.Application.Abstractions.FileData;
 using OrganizationData.Application.Abstractions.FileData.DataInsertion;
@@ -7,6 +8,7 @@ using OrganizationData.Application.Abstractions.Services.Factories;
 using OrganizationData.Application.Abstractions.Services.Filter;
 using OrganizationData.Application.Abstractions.Services.Organization;
 using OrganizationData.Application.Abstractions.Services.User;
+using OrganizationData.Application.DailyStats;
 using OrganizationData.Application.Data;
 using OrganizationData.Application.FileData;
 using OrganizationData.Application.FileData.DataInsertion;
@@ -50,6 +52,9 @@ namespace OrganizationData.Application
             services.AddTransient<ITokenIssuer, TokenIssuer>();
             services.AddTransient<IUserDTOFactory, UserDTOFactory>();
             services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<ICsvStatsWriter, CsvStatsWriter>();
+            services.AddTransient<ICsvDataFactory, CsvStatsFactory>();
 
             return services;
         }

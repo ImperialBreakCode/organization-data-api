@@ -30,5 +30,8 @@ namespace OrganizationData.API.Implementations
 
         public AuthSettings AuthSettings 
             => _organizationApiOptions.CurrentValue.AuthSettings;
+
+        public string CsvStatsDir 
+            => _organizationApiOptions.CurrentValue.CsvStatsDir;
     }
 }

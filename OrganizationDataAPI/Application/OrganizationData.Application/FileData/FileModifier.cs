@@ -22,10 +22,11 @@ namespace OrganizationData.Application.FileData
             MoveFile(path, _settings.ProcessedFilesDir);
         }
 
-        private void MoveFile(string path, string newFolder)
+        private void MoveFile(string path, string newDir)
         {
-            string newFilename = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
-            File.Move(path, newFolder + $"/{newFilename}.csv");
+            string newFilename = $"{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}.csv";
+            string newPath = Path.Combine(newDir, newFilename);
+            File.Move(path, newPath);
         }
     }
 }

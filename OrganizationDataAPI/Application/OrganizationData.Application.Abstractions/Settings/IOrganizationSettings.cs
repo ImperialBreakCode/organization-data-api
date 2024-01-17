@@ -9,5 +9,6 @@ namespace OrganizationData.Application.Abstractions.Settings
         string ProcessedFilesDir { get; }
         string FailedFilesDir {  get; }
         AuthSettings AuthSettings { get; }
+        string CsvStatsDir { get; }
     }
 }

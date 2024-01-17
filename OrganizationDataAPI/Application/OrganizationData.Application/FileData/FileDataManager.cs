@@ -1,4 +1,5 @@
-﻿using OrganizationData.Application.Abstractions.FileData;
+﻿using CsvHelper;
+using OrganizationData.Application.Abstractions.FileData;
 using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Application.Abstractions.Settings;
 
@@ -27,11 +28,19 @@ namespace OrganizationData.Application.FileData
 
             for (int i = 0; i < files.Length; i++)
             {
-                var data = _reader.ReadFile(files[i]);
-                var collectionWrapper = _dataNormalizer.NormalizeData(data);
-                _inserter.SaveData(collectionWrapper);
+                try
+                {
+                    var data = _reader.ReadFile(files[i]);
+                    var collectionWrapper = _dataNormalizer.NormalizeData(data);
+                    _inserter.SaveData(collectionWrapper);
 
-                _modifier.MarkFileAsRead(files[i]);
+                    _modifier.MarkFileAsRead(files[i]);
+                }
+                catch (CsvHelperException)
+                {
+                    _modifier.MarkFileAsFailed(files[i]);
+                }
+                
             }
         }
     }

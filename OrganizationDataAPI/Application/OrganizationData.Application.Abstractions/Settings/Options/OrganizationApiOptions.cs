@@ -6,6 +6,7 @@ namespace OrganizationData.Application.Abstractions.Settings.Options
     {
         public string FileReaderDir { get; set; }
         public string ProcessedFilesDir { get; set; }
+        public string FailedFilesDir { get; set; }
         public AuthSettings AuthSettings { get; set; }
     }
 }

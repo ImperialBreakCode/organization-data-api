@@ -7,6 +7,7 @@ namespace OrganizationData.Application.Abstractions.Settings
         string ConnectionString { get; }
         string FileReaderDir { get; }
         string ProcessedFilesDir { get; }
+        string FailedFilesDir {  get; }
         AuthSettings AuthSettings { get; }
     }
 }

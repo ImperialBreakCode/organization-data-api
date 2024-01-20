@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OrganizationData.Application.Abstractions.Services;
 
 namespace OrganizationData.API.Controllers
@@ -8,10 +9,12 @@ namespace OrganizationData.API.Controllers
     public class StatsController : ControllerBase
     {
         private readonly IStatsService _statsService;
+        private readonly IDailyCsvStatsService _dailyCsvStatsService;
 
-        public StatsController(IStatsService statsService)
+        public StatsController(IStatsService statsService, IDailyCsvStatsService dailyCsvStatsService)
         {
             _statsService = statsService;
+            _dailyCsvStatsService = dailyCsvStatsService;
         }
 
         [HttpGet("GetOrganizationCountByCountries")]
@@ -40,6 +43,29 @@ namespace OrganizationData.API.Controllers
         {
             var result = _statsService.GetTopTenYoungestOrganizations();
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("GetPdfStats/{day}/{month}/{year}/{daysAhead}")]
+        public IActionResult GetPdfStats(int day, int month, int year, int daysAhead)
+        {
+            try
+            {
+                var pdf = _dailyCsvStatsService.GetStatsForADate(day, month, year, daysAhead);
+
+                if (pdf is null)
+                {
+                    return NotFound("No available stats for the chosen date.");
+                }
+
+                return File(pdf, "application/pdf");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+
+                return BadRequest("The given date is incorrect.");
+            }
+            
         }
     }
 }

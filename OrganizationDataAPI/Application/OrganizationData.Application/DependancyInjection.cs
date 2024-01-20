@@ -46,6 +46,7 @@ namespace OrganizationData.Application
             services.AddTransient<IIndustryService, IndustryService>();
             services.AddTransient<IOrganizationDataHelper, OrganizationDataHelper>();
             services.AddTransient<IOrganizationService, OrganizationService>();
+            services.AddTransient<IOrgPDFGenerator, OrgPDFGenerator>();
             services.AddTransient<IStatsService, StatsService>();
 
             services.AddTransient<IPasswordManager, PasswordManager>();
@@ -55,6 +56,9 @@ namespace OrganizationData.Application
 
             services.AddTransient<ICsvStatsWriter, CsvStatsWriter>();
             services.AddTransient<ICsvDataFactory, CsvStatsFactory>();
+            services.AddTransient<IDailyCsvStatsService, DailyCsvStatsService>();
+            services.AddTransient<IPDFGenerator, PDFGenerator>();
+            services.AddTransient<ICsvStatsReader, CsvStatsReader>();
 
             return services;
         }

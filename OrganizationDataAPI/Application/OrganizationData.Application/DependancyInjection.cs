@@ -1,13 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OrganizationData.Application.Abstractions.DailyStats;
 using OrganizationData.Application.Abstractions.Data;
 using OrganizationData.Application.Abstractions.FileData;
+using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Application.Abstractions.Services;
 using OrganizationData.Application.Abstractions.Services.Factories;
 using OrganizationData.Application.Abstractions.Services.Filter;
 using OrganizationData.Application.Abstractions.Services.Organization;
 using OrganizationData.Application.Abstractions.Services.User;
+using OrganizationData.Application.DailyStats;
 using OrganizationData.Application.Data;
 using OrganizationData.Application.FileData;
+using OrganizationData.Application.FileData.DataInsertion;
 using OrganizationData.Application.Mapper;
 using OrganizationData.Application.QuartzConfig;
 using OrganizationData.Application.Services;
@@ -42,12 +46,19 @@ namespace OrganizationData.Application
             services.AddTransient<IIndustryService, IndustryService>();
             services.AddTransient<IOrganizationDataHelper, OrganizationDataHelper>();
             services.AddTransient<IOrganizationService, OrganizationService>();
+            services.AddTransient<IOrgPDFGenerator, OrgPDFGenerator>();
             services.AddTransient<IStatsService, StatsService>();
 
             services.AddTransient<IPasswordManager, PasswordManager>();
             services.AddTransient<ITokenIssuer, TokenIssuer>();
             services.AddTransient<IUserDTOFactory, UserDTOFactory>();
             services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<ICsvStatsWriter, CsvStatsWriter>();
+            services.AddTransient<ICsvDataFactory, CsvStatsFactory>();
+            services.AddTransient<IDailyCsvStatsService, DailyCsvStatsService>();
+            services.AddTransient<IPDFGenerator, PDFGenerator>();
+            services.AddTransient<ICsvStatsReader, CsvStatsReader>();
 
             return services;
         }
@@ -67,6 +78,9 @@ namespace OrganizationData.Application
             services.AddTransient<IFileDataManager, FileDataManager>();
             services.AddTransient<IFileModifier, FileModifier>();
             services.AddTransient<IFileDataInserter, FileDataInserter>();
+            services.AddTransient<IDataNormalizer, DataNormalizer>();
+
+            services.AddSingleton<IOrganizationIdsSet, OrganizationIdsSet>();
 
             return services;
         }

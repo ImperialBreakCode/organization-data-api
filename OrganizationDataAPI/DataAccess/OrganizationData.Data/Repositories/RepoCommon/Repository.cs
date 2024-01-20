@@ -18,13 +18,20 @@ namespace OrganizationData.Data.Repositories.RepoCommon
             _insertQuery = SqlQueryGeneratorHelper.GenerateInsertQuery<T>();
             _updateQuery = SqlQueryGeneratorHelper.GenerateUpdateQuery<T>();
             _getByIdQuery = $"SELECT * FROM [{typeof(T).Name}] WHERE Id=@id";
-            _getAllQuery = $"SELECT * FROM [{typeof(T).Name}]";
+            _getAllQuery = $"SELECT * FROM [{typeof(T).Name}] WHERE DeletedAt IS NULL";
         }
 
         protected string InsertQuery => _insertQuery;
         protected string UpdateQuery => _updateQuery;
         protected string GetByIdQuery => _getByIdQuery;
         protected string GetAllQuery => _getAllQuery;
+
+        public ICollection<T> GetAll()
+        {
+            var command = CreateCommand(GetAllQuery);
+
+            return EntityConverterHelper.ToEntityCollection<T>(command);
+        }
 
         public T? GetById(string id)
         {

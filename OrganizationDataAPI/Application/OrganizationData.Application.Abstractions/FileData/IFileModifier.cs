@@ -3,5 +3,6 @@
     public interface IFileModifier
     {
         void MarkFileAsRead(string path);
+        void MarkFileAsFailed(string path);
     }
 }

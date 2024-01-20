@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OrganizationData.Application.Abstractions.FileData;
+using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Application.DTO.Organization;
 using OrganizationData.Application.DTO.Stats;
 using OrganizationData.Data.Entities;
@@ -15,11 +16,9 @@ namespace OrganizationData.Application.Mapper
             CreateMap<UpdateOrganizationRequestDTO, Organization>();
             CreateMap<CreateOrganizationRequestDTO, Organization>();
 
-            CreateMap<OrganizationCsvData, CreateOrganizationRequestDTO>()
-                .ForMember(dest => dest.Industries, opt => opt.MapFrom(src 
-                    => src.Industry.Split('/', StringSplitOptions.None).Select(i => i.Trim())));
-
-            CreateMap<OrganizationCsvData, UpdateOrganizationRequestDTO>();
+            CreateMap<OrganizationCsvData, Organization>()
+                .ForMember(dest => dest.CountryId, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<OrganizationCountByCountry, OrganizationCountByCountryDTO>();
             CreateMap<OrganizationCountByIndustry, OrganizationCountByIndustryDTO>();

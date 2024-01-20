@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientDataSender", "ClientDataSender", "{EEE81591-C8AB-40B0-95A7-D65D1C127F2C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrganizationDataAPI", "OrganizationDataAPI", "{282E1FF7-235D-4426-95CD-77C55E77520B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrganizationData.API", "OrganizationDataAPI\OrganizationData.API\OrganizationData.API.csproj", "{50486347-F477-4872-884A-91F73C46632B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientDataSender", "ClientDataSender\ClientDataSender.csproj", "{043E7545-B2D8-435D-8FC5-4E9B4C5CFA31}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrganizationData.Application", "OrganizationDataAPI\Application\OrganizationData.Application\OrganizationData.Application.csproj", "{4EB734B2-302C-4800-A7EE-11512E66BDAD}"
 EndProject
@@ -37,10 +33,6 @@ Global
 		{50486347-F477-4872-884A-91F73C46632B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50486347-F477-4872-884A-91F73C46632B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50486347-F477-4872-884A-91F73C46632B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{043E7545-B2D8-435D-8FC5-4E9B4C5CFA31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{043E7545-B2D8-435D-8FC5-4E9B4C5CFA31}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{043E7545-B2D8-435D-8FC5-4E9B4C5CFA31}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{043E7545-B2D8-435D-8FC5-4E9B4C5CFA31}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4EB734B2-302C-4800-A7EE-11512E66BDAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4EB734B2-302C-4800-A7EE-11512E66BDAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EB734B2-302C-4800-A7EE-11512E66BDAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -71,7 +63,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{50486347-F477-4872-884A-91F73C46632B} = {282E1FF7-235D-4426-95CD-77C55E77520B}
-		{043E7545-B2D8-435D-8FC5-4E9B4C5CFA31} = {EEE81591-C8AB-40B0-95A7-D65D1C127F2C}
 		{4EB734B2-302C-4800-A7EE-11512E66BDAD} = {CAC770D1-F353-40D2-8B58-29C9F58AFDD4}
 		{2F263960-B66D-40F1-9DA4-4A1F2A59DC67} = {CAC770D1-F353-40D2-8B58-29C9F58AFDD4}
 		{9D7C53A3-FA44-47A8-B7FC-89866F82CAE8} = {CAC770D1-F353-40D2-8B58-29C9F58AFDD4}

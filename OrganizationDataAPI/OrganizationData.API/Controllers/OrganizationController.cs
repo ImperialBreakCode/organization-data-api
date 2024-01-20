@@ -13,10 +13,12 @@ namespace OrganizationData.API.Controllers
     public class OrganizationController : ControllerBase
     {
         private readonly IOrganizationService _organizationService;
+        private readonly IOrgPDFGenerator _orgPDFGenerator;
 
-        public OrganizationController(IOrganizationService organizationService)
+        public OrganizationController(IOrganizationService organizationService, IOrgPDFGenerator orgPDFGenerator)
         {
             _organizationService = organizationService;
+            _orgPDFGenerator = orgPDFGenerator;
         }
 
         [HttpGet("GetByOrganizationId/{organizationId}")]
@@ -29,6 +31,19 @@ namespace OrganizationData.API.Controllers
             }
 
             return Ok(result.Result);
+        }
+
+        [Authorize]
+        [HttpGet("GetPdfInformationByOrganizationId/{organizationId}")]
+        public IActionResult GetPdfInformationByOrganizationId(string organizationId)
+        {
+            var result = _organizationService.GetOrganizationByOrganizationId(organizationId);
+            if (result.ErrorMessage is not null)
+            {
+                return this.ParseAndReturnMessage(result.ErrorMessage);
+            }
+
+            return File(_orgPDFGenerator.GetPdf(result.Result!), "application/pdf");
         }
 
         [Authorize(Policy = ApiScopes.WriteScope)]

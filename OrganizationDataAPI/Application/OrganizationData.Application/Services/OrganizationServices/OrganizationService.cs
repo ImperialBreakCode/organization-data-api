@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OrganizationData.Application.Abstractions.Data;
+using OrganizationData.Application.Abstractions.FileData.DataInsertion;
 using OrganizationData.Application.Abstractions.Services;
 using OrganizationData.Application.Abstractions.Services.Factories;
 using OrganizationData.Application.Abstractions.Services.Filter;
@@ -20,23 +21,26 @@ namespace OrganizationData.Application.Services.OrganizationServices
         private readonly IMapper _mapper;
         private readonly IEntityFactory _entityFactory;
         private readonly IServiceGetResultFactory _serviceGetResultFactory;
+        private readonly IOrganizationIdsSet _organizationIdsSet;
 
         public OrganizationService(
-            IOrganizationData organizationData, 
-            IOrganizationDataHelper organizationDataHelper, 
-            IDataFilter dataFilter, 
-            IMapper mapper, 
-            IEntityFactory entityFactory, 
-            IServiceGetResultFactory serviceGetResultFactory)
+            IOrganizationData organizationData,
+            IOrganizationDataHelper organizationDataHelper,
+            IDataFilter dataFilter,
+            IMapper mapper,
+            IEntityFactory entityFactory,
+            IServiceGetResultFactory serviceGetResultFactory,
+            IOrganizationIdsSet organizationIdsSet)
         {
             _dataFilter = dataFilter;
             _context = organizationData.DbContext;
             _organizationDataHelper = organizationDataHelper;
             _mapper = mapper;
             _entityFactory = entityFactory;
+            _serviceGetResultFactory = serviceGetResultFactory;
+            _organizationIdsSet = organizationIdsSet;
 
             _organizationDataHelper.SetOrganizationDbContext(_context);
-            _serviceGetResultFactory = serviceGetResultFactory;
         }
 
         public string AddIndustry(AddIndustryRequestDTO addIndustryDTO)
@@ -83,9 +87,7 @@ namespace OrganizationData.Application.Services.OrganizationServices
 
         public string CreateOrganization(CreateOrganizationRequestDTO createDTO)
         {
-            Organization? organizationWithTheSameOrgId = _context.Organization.GetByOrganizationId(createDTO.OrganizationId);
-            var filterResult = _dataFilter.CheckSingle(organizationWithTheSameOrgId);
-            if (filterResult.Success)
+            if (_organizationIdsSet.ContainsId(createDTO.OrganizationId))
             {
                 return ServiceMessages.OrganizationIdConflict;
             }
@@ -109,20 +111,20 @@ namespace OrganizationData.Application.Services.OrganizationServices
 
             _context.SaveChanges();
 
+            _organizationIdsSet.AddId(organization.OrganizationId);
+
             return ServiceMessages.OrganizationCreated;
         }
         
         public string UpdateOrganization(string organizationId, UpdateOrganizationRequestDTO updateDTO)
         {
-            Organization? organizationWithTheSameOrgId = _context.Organization.GetByOrganizationId(updateDTO.OrganizationId);
-            var filterResult = _dataFilter.CheckSingle(organizationWithTheSameOrgId);
-            if (filterResult.Success && organizationWithTheSameOrgId!.OrganizationId != organizationId)
+            if (organizationId != updateDTO.OrganizationId && _organizationIdsSet.ContainsId(updateDTO.OrganizationId))
             {
                 return ServiceMessages.OrganizationIdConflict;
             }
 
             Organization? organization = _context.Organization.GetByOrganizationId(organizationId);
-            filterResult = _dataFilter.CheckSingle(organization);
+            var filterResult = _dataFilter.CheckSingle(organization);
             if (!filterResult.Success)
             {
                 return filterResult.ErrorMessage!;
@@ -141,6 +143,9 @@ namespace OrganizationData.Application.Services.OrganizationServices
             _context.Organization.Update(organization!);
             _context.SaveChanges();
 
+            _organizationIdsSet.RemoveId(organizationId);
+            _organizationIdsSet.AddId(updateDTO.OrganizationId);
+
             return ServiceMessages.OrganizationUpdated;
         }
 
@@ -155,6 +160,8 @@ namespace OrganizationData.Application.Services.OrganizationServices
 
             _context.Organization.SoftDelete(organization!);
             _context.SaveChanges();
+
+            _organizationIdsSet.RemoveId(organizationId);
 
             return ServiceMessages.OrganizationDeleted;
         }

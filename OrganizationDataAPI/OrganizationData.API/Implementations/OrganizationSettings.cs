@@ -25,7 +25,13 @@ namespace OrganizationData.API.Implementations
         public string ProcessedFilesDir 
             => _organizationApiOptions.CurrentValue.ProcessedFilesDir;
 
+        public string FailedFilesDir 
+            => _organizationApiOptions.CurrentValue.FailedFilesDir;
+
         public AuthSettings AuthSettings 
             => _organizationApiOptions.CurrentValue.AuthSettings;
+
+        public string CsvStatsDir 
+            => _organizationApiOptions.CurrentValue.CsvStatsDir;
     }
 }
